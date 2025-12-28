@@ -46,6 +46,30 @@ export interface SkillCategory {
   skills: string[];
 }
 
+// Highlight item for About page (icon-based cards)
+export interface HighlightItem {
+  icon: string; // Icon name: "Code2", "Lightbulb", "Target", "Rocket"
+  title: string;
+  desc: string;
+}
+
+// About page content
+export interface AboutPageContent {
+  headline: string;
+  headlineHighlight: string;
+  subheadline: string;
+  paragraphs: string[];
+  highlights: HighlightItem[];
+  coreSkills: string[];
+  whatDrivesMe: string[];
+}
+
+// Core competency for skills page summary
+export interface CoreCompetency {
+  label: string;
+  value: string;
+}
+
 export interface PortfolioData {
   name: string;
   title: string;
@@ -62,6 +86,9 @@ export interface PortfolioData {
   certifications: Certification[];
   education: Education[];
   skillCategories: SkillCategory[];
+  // New fields for maximum flexibility
+  aboutPage: AboutPageContent;
+  coreCompetencies: CoreCompetency[];
 }
 
 interface PortfolioState {
@@ -307,6 +334,64 @@ const defaultData: PortfolioData = {
       period: "2021",
       grade: "61.33%",
     },
+  ],
+  // About page content
+  aboutPage: {
+    headline: "Fresh Perspective,",
+    headlineHighlight: "Bold Ambition",
+    subheadline:
+      "A passionate developer ready to make an impact in the tech industry.",
+    paragraphs: [
+      "As a recent graduate stepping into the professional world, I bring fresh perspectives, cutting-edge knowledge, and an unwavering commitment to growth. My academic journey and personal projects have equipped me with a solid foundation in software development.",
+      "I'm passionate about staying at the forefront of technology, currently focusing on AI integrations and modern frontend frameworks. I thrive on challenges and am eager to contribute to innovative projects that push boundaries.",
+    ],
+    highlights: [
+      {
+        icon: "Code2",
+        title: "Clean Code",
+        desc: "Writing maintainable, scalable solutions",
+      },
+      {
+        icon: "Lightbulb",
+        title: "Innovation",
+        desc: "Exploring cutting-edge technologies",
+      },
+      {
+        icon: "Target",
+        title: "Goal-Oriented",
+        desc: "Focused on delivering results",
+      },
+      {
+        icon: "Rocket",
+        title: "Fast Learner",
+        desc: "Quick to adapt and grow",
+      },
+    ],
+    coreSkills: [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Python",
+      "Next.js",
+      "TailwindCSS",
+      "MongoDB",
+      "Git",
+      "Docker",
+      "REST APIs",
+    ],
+    whatDrivesMe: [
+      "Building impactful solutions",
+      "Learning new technologies",
+      "Open Source contributions",
+      "Problem solving & innovation",
+    ],
+  },
+  // Core competencies for skills page
+  coreCompetencies: [
+    { label: "Frontend", value: "React, Next.js, TypeScript" },
+    { label: "Backend", value: "Node.js, Express, Django" },
+    { label: "Database", value: "MongoDB, MySQL, PostgreSQL" },
+    { label: "Tools", value: "Git, Docker, VS Code" },
   ],
 };
 
