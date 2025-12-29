@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, Suspense, useRef } from "react";
+import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Layout } from "@/components/layout/Layout";
 import { usePortfolioStore } from "@/store/portfolioStore";
@@ -17,27 +17,13 @@ const FloatingDeckScene = dynamic(
 );
 
 export default function ProjectsPage() {
-  const { data } = usePortfolioStore();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
+  const { data, setBackgroundVariant } = usePortfolioStore();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Scroll progress
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const scrollProgress = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-  const [scrollValue, setScrollValue] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
-    const unsubscribe = scrollProgress.on("change", setScrollValue);
-    return () => unsubscribe();
-  }, [scrollProgress]);
+    setBackgroundVariant("enhanced");
+  }, [setBackgroundVariant]);
 
   // Mouse tracking
   useEffect(() => {
@@ -51,86 +37,60 @@ export default function ProjectsPage() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Mobile detection
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Loading animation
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <Layout>
-      <div ref={containerRef} className="relative">
-        {/* Hero Section with Floating Deck */}
-        <section
-          ref={heroRef}
-          className="min-h-screen relative overflow-hidden"
-        >
-          {/* WebGL Canvas */}
-          <div className="fixed inset-0 z-0">
-            {!isMobile && (
-              <Suspense fallback={null}>
-                <FloatingDeckScene
-                  projects={data.projects}
-                  scrollProgress={scrollValue}
-                  mousePosition={mousePosition}
-                  onSelectProject={setSelectedIndex}
-                  selectedIndex={selectedIndex}
-                />
-              </Suspense>
-            )}
+    <Layout showBackground={false}>
+      <div className="relative">
+        <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
+          <Suspense fallback={null}>
+            <FloatingDeckScene
+              projects={data.projects}
+              scrollProgress={0}
+              mousePosition={mousePosition}
+              onSelectProject={setSelectedIndex}
+              selectedIndex={selectedIndex}
+            />
+          </Suspense>
+        </div>
+        {/* Hero Section */}
+        <section className="min-h-[60vh] md:min-h-[80vh] relative flex flex-col items-center justify-center px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl relative z-10"
+          >
+            <motion.span className="text-xs font-semibold text-accent uppercase tracking-[0.3em] mb-4 sm:mb-6 block">
+              Featured Work
+            </motion.span>
 
-            {/* Mobile fallback gradient */}
-            {isMobile && (
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20" />
-            )}
-          </div>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 tracking-tight">
+              My <span className="gradient-text">Projects</span>
+            </h1>
 
-          {/* Hero Content */}
-          <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12">
+              Each project represents a unique challenge solved with modern
+              technologies and thoughtful design.
+            </p>
+
             <motion.div
-              className="text-center max-w-4xl"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              className="flex flex-col items-center gap-2 text-muted-foreground"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
             >
-              <span className="text-xs font-medium text-accent uppercase tracking-[0.3em] mb-6 block">
-                Featured Work
-              </span>
-
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-                My <span className="gradient-text">Projects</span>
-              </h1>
-
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
-                Each project represents a unique challenge solved with modern
-                technologies and thoughtful design.
-              </p>
-
-              {/* Scroll indicator */}
+              <span className="text-sm font-medium">Scroll to explore</span>
               <motion.div
-                className="flex flex-col items-center gap-2 text-muted-foreground"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
+                animate={{ y: [0, 8, 0] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
-                <span className="text-sm">Scroll to explore</span>
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <ChevronDown className="w-5 h-5" />
-                </motion.div>
+                <ChevronDown className="w-5 h-5 text-accent" />
               </motion.div>
             </motion.div>
-          </div>
+          </motion.div>
         </section>
 
         {/* Projects Grid Section */}

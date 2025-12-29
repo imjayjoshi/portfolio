@@ -1,28 +1,14 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
 import "./globals.css";
+import { generatePageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Jay Joshi | Full Stack Developer",
-  description:
-    "Jay Joshi - Full Stack Developer, AI Integrator, and Creative Frontend Developer. Building digital experiences with modern technologies.",
-  keywords:
-    "Full Stack Developer, AI Integrator, Frontend Developer, React, TypeScript, Node.js, Portfolio",
-  authors: [{ name: "Jay Joshi" }],
+  ...generatePageMetadata("home"),
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
     apple: "/favicon.svg",
-  },
-  openGraph: {
-    title: "Jay Joshi | Full Stack Developer",
-    description:
-      "Full Stack Developer, AI Integrator, and Creative Frontend Developer.",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@jayjoshi",
   },
 };
 

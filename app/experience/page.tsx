@@ -1,12 +1,11 @@
 "use client";
 
 import { useRef, useEffect, useState, Suspense } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useInView } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { usePortfolioStore } from "@/store/portfolioStore";
-import { useReveal } from "@/hooks/useReveal";
 import { Briefcase, MapPin, Calendar } from "lucide-react";
 
 // Lazy load WebGL scene
@@ -19,12 +18,16 @@ const ExperienceScene = dynamic(
 );
 
 export default function ExperiencePage() {
-  const { data } = usePortfolioStore();
-  const { ref: headerRef, isRevealed: headerRevealed } = useReveal();
+  const { data, setBackgroundVariant } = usePortfolioStore();
+  const headerRef = useRef(null);
+  const isHeaderInView = useInView(headerRef, { once: true });
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const experienceRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    setBackgroundVariant("default");
+  }, [setBackgroundVariant]);
 
   // Scroll progress for the timeline
   const { scrollYProgress } = useScroll({
@@ -32,20 +35,11 @@ export default function ExperiencePage() {
     offset: ["start center", "end center"],
   });
 
-  // Smooth spring for the progress line
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
   });
-
-  // Mobile detection
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Calculate which experience is active based on scroll
   useEffect(() => {
@@ -69,160 +63,150 @@ export default function ExperiencePage() {
       setActiveIndex(newActiveIndex);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [data.experiences.length]);
 
   return (
-    <Layout>
+    <Layout showBackground={false}>
       <PageTransition>
         <div className="relative min-h-screen">
-          {/* WebGL Background */}
+          {/* Background Scene */}
           <div className="fixed inset-0 z-0">
-            {!isMobile && (
-              <Suspense fallback={null}>
-                <ExperienceScene />
-              </Suspense>
-            )}
-            {isMobile && (
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-transparent to-indigo-900/5" />
-            )}
+            <Suspense fallback={null}>
+              <ExperienceScene />
+            </Suspense>
           </div>
 
           <section className="section-padding relative z-10">
-            <div className="container-main">
+            <div className="container-main px-4 sm:px-6">
               {/* Header */}
-              <div
+              <motion.div
                 ref={headerRef}
-                className={`text-center md:text-left reveal ${
-                  headerRevealed ? "revealed" : ""
-                }`}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+                className="text-center mb-12 md:mb-16"
               >
-                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
-                  <Briefcase size={28} className="text-accent" />
-                  <h1 className="font-display text-4xl md:text-6xl font-bold">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <Briefcase size={24} className="text-accent sm:w-7 sm:h-7" />
+                  <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
                     Work <span className="gradient-text">Experience</span>
                   </h1>
                 </div>
-                <p className="text-muted-foreground mb-16 max-w-2xl mx-auto md:mx-0 text-lg">
+                <p className="text-muted-foreground mb-8 md:mb-16 max-w-2xl mx-auto text-base sm:text-lg px-4">
                   My professional journey and the impact I've made along the
                   way.
                 </p>
-              </div>
+              </motion.div>
 
               {/* Timeline */}
               <div ref={containerRef} className="relative">
-                {/* Static timeline line */}
-                <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border/30 md:-translate-x-1/2" />
+                {/* Timeline line - left on mobile, center on desktop */}
+                <div className="absolute left-4 sm:left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-border/30 md:-translate-x-1/2" />
 
                 {/* Animated progress line */}
                 <motion.div
-                  className="absolute left-6 md:left-1/2 top-0 w-px bg-accent md:-translate-x-1/2 origin-top"
+                  className="absolute left-4 sm:left-6 md:left-1/2 top-0 w-0.5 bg-accent md:-translate-x-1/2 origin-top"
                   style={{
                     scaleY: smoothProgress,
                     height: "100%",
                   }}
                 />
 
-                {data.experiences.map((exp, index) => (
-                  <motion.div
-                    key={exp.id}
-                    ref={(el) => {
-                      experienceRefs.current[index] = el;
-                    }}
-                    className={`relative mb-16 md:w-1/2 pl-16 md:pl-0 ${
-                      index % 2 === 0
-                        ? "md:pr-16 md:ml-0"
-                        : "md:pl-16 md:ml-auto"
-                    }`}
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                  >
-                    {/* Timeline dot */}
-                    <motion.div
-                      className={`absolute top-6 w-3 h-3 rounded-full border-2 border-background transition-colors duration-300 ${
-                        index % 2 === 0
-                          ? "left-[22px] md:left-auto md:right-0 md:translate-x-1/2"
-                          : "left-[22px] md:left-0 md:-translate-x-1/2"
-                      } ${activeIndex >= index ? "bg-accent" : "bg-muted"}`}
-                      style={{ marginLeft: "-6px" }}
-                      animate={{
-                        scale: activeIndex === index ? 1.4 : 1,
-                      }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    />
+                {/* Experience entries */}
+                {data.experiences.map((exp, index) => {
+                  const isLeft = index % 2 === 0;
 
-                    <motion.div
-                      className={`glass-card rounded-2xl p-6 transition-all duration-300 ${
-                        activeIndex === index ? "ring-1 ring-accent/30" : ""
-                      }`}
-                      whileHover={{ y: -6, scale: 1.02 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 20,
-                      }}
-                    >
-                      {/* Period badge */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <Calendar size={14} className="text-accent" />
-                        <span className="text-sm text-accent font-medium">
-                          {exp.period}
-                        </span>
+                  return (
+                    <div key={exp.id} className="relative mb-8 sm:mb-12">
+                      {/* Timeline dot */}
+                      <div
+                        className="absolute left-4 sm:left-6 md:left-1/2 top-6 -translate-x-1/2 z-30"
+                        ref={(el) => {
+                          experienceRefs.current[index] =
+                            el?.parentElement as HTMLDivElement;
+                        }}
+                      >
+                        <div
+                          className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-background shadow-md ${
+                            activeIndex >= index ? "bg-accent" : "bg-muted"
+                          }`}
+                        />
                       </div>
 
-                      <h3 className="font-display text-xl font-semibold mb-1">
-                        {exp.title}
-                      </h3>
-                      <p className="text-foreground/80 text-sm font-medium mb-1">
-                        {exp.company}
-                      </p>
+                      {/* Card container */}
+                      <motion.div
+                        className={`w-[calc(100%-2.5rem)] sm:w-[calc(100%-3.5rem)] md:w-[calc(50%-2rem)] ml-8 sm:ml-12 ${
+                          isLeft ? "md:ml-0 md:mr-auto" : "md:ml-auto md:mr-0"
+                        }`}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                      >
+                        <div className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                          {/* Period badge */}
+                          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                            <Calendar
+                              size={12}
+                              className="text-accent sm:w-3.5 sm:h-3.5"
+                            />
+                            <span className="text-xs sm:text-sm text-accent font-medium">
+                              {exp.period}
+                            </span>
+                          </div>
 
-                      {exp.location && (
-                        <div className="flex items-center gap-1 text-muted-foreground text-xs mb-4">
-                          <MapPin size={12} />
-                          {exp.location}
+                          <h3 className="font-display text-lg sm:text-xl font-semibold mb-1">
+                            {exp.title}
+                          </h3>
+                          <p className="text-foreground/80 text-xs sm:text-sm font-medium mb-1">
+                            {exp.company}
+                          </p>
+
+                          {exp.location && (
+                            <div className="flex items-center gap-1 text-muted-foreground text-xs mb-3 sm:mb-4">
+                              <MapPin size={10} className="sm:w-3 sm:h-3" />
+                              {exp.location}
+                            </div>
+                          )}
+
+                          <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
+                            {exp.description}
+                          </p>
+
+                          {exp.highlights && exp.highlights.length > 0 && (
+                            <ul className="text-muted-foreground text-xs sm:text-sm mb-4 sm:mb-5 space-y-1.5 sm:space-y-2">
+                              {exp.highlights.map((h, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-accent mt-1.5 sm:mt-2 flex-shrink-0" />
+                                  <span className="leading-relaxed">{h}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+
+                          <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-3 sm:pt-4 border-t border-border/50">
+                            {exp.technologies.map((tech) => (
+                              <span
+                                key={tech}
+                                className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs bg-accent/10 text-accent rounded-md sm:rounded-lg border border-accent/20"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                      )}
-
-                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                        {exp.description}
-                      </p>
-
-                      {exp.highlights && exp.highlights.length > 0 && (
-                        <ul className="text-muted-foreground text-sm mb-5 space-y-2">
-                          {exp.highlights.map((h, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-
-                      <div className="flex flex-wrap gap-2 pt-4 border-t border-border/50">
-                        {exp.technologies.map((tech) => (
-                          <motion.span
-                            key={tech}
-                            className="px-2.5 py-1 text-xs bg-accent/10 text-accent rounded-lg border border-accent/20"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            {tech}
-                          </motion.span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                ))}
+                      </motion.div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Education Section */}
-              <div className="mt-24">
+              <div className="mt-16 sm:mt-20 md:mt-24">
                 <motion.h2
-                  className="font-display text-3xl md:text-4xl font-bold mb-12 text-center"
+                  className="font-display text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10 md:mb-12 text-center"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -230,27 +214,26 @@ export default function ExperiencePage() {
                   <span className="gradient-text">Education</span>
                 </motion.h2>
 
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                   {data.education.map((edu, index) => (
                     <motion.div
                       key={edu.id}
-                      className="glass-card rounded-2xl p-6"
+                      className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6"
                       initial={{ opacity: 0, y: 30 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -6, scale: 1.02 }}
                     >
-                      <span className="text-sm text-accent font-medium">
+                      <span className="text-xs sm:text-sm text-accent font-medium">
                         {edu.period}
                       </span>
-                      <h3 className="font-display text-lg font-semibold mt-2 mb-1">
+                      <h3 className="font-display text-base sm:text-lg font-semibold mt-2 mb-1">
                         {edu.degree}
                       </h3>
-                      <p className="text-muted-foreground text-sm mb-3">
+                      <p className="text-muted-foreground text-xs sm:text-sm mb-3">
                         {edu.institution}
                       </p>
-                      <div className="inline-flex items-center px-3 py-1 rounded-lg bg-accent/10 text-accent text-sm">
+                      <div className="inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-md sm:rounded-lg bg-accent/10 text-accent text-xs sm:text-sm">
                         {edu.grade}
                       </div>
                     </motion.div>

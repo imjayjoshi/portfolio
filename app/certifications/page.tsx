@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   ExternalLink,
   BadgeCheck,
@@ -10,21 +12,16 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
+import { ScrollBackground } from "@/components/transitions/ScrollBackground";
 import { usePortfolioStore } from "@/store/portfolioStore";
 
 export default function CertificationsPage() {
-  const { data } = usePortfolioStore();
+  const { data, setBackgroundVariant } = usePortfolioStore();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true);
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    setBackgroundVariant("minimal");
+  }, [setBackgroundVariant]);
 
   const nextCard = () => {
     setSelectedIndex((prev) => (prev + 1) % data.certifications.length);
@@ -38,15 +35,10 @@ export default function CertificationsPage() {
   };
 
   return (
-    <Layout>
+    <Layout showBackground={false}>
       <PageTransition>
         <div className="relative min-h-screen">
-          {/* Gradient background - static on mobile, fixed on desktop */}
-          <div className="absolute md:fixed inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0b0d10] via-[#0f1419] to-[#1a1f35]" />
-            {/* Hide this decorative gradient on mobile */}
-            <div className="hidden md:block absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-blue-600/10 via-purple-600/5 to-transparent" />
-          </div>
+          <ScrollBackground />
 
           <section className="section-padding relative z-10">
             <div className="container-main w-full">
@@ -54,9 +46,9 @@ export default function CertificationsPage() {
                 {/* Left side: Text content */}
                 <motion.div
                   className="text-center lg:text-left"
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={isLoaded ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.8 }}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6 }}
                 >
                   <span className="text-xs font-medium text-accent uppercase tracking-[0.3em] mb-4 block">
                     Credentials
@@ -68,7 +60,7 @@ export default function CertificationsPage() {
 
                   <div className="space-y-4 mb-8 inline-flex flex-col items-center lg:items-start">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center">
                         <BadgeCheck className="w-4 h-4 text-accent" />
                       </div>
                       <span className="text-muted-foreground">
@@ -76,7 +68,7 @@ export default function CertificationsPage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center">
                         <span className="text-xs">🎓</span>
                       </div>
                       <span className="text-muted-foreground">
@@ -84,7 +76,7 @@ export default function CertificationsPage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center">
                         <span className="text-xs">🌐</span>
                       </div>
                       <span className="text-muted-foreground">
@@ -101,7 +93,7 @@ export default function CertificationsPage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3 }}
-                      className="glass-card rounded-xl p-6 mb-6"
+                      className="glass-card rounded-3xl p-6 mb-6"
                     >
                       <h3 className="text-xl font-bold mb-2">
                         {data.certifications[selectedIndex]?.title}
@@ -165,7 +157,7 @@ export default function CertificationsPage() {
                 <motion.div
                   className="relative h-[500px] perspective-[1000px]"
                   initial={{ opacity: 0, x: 50 }}
-                  animate={isLoaded ? { opacity: 1, x: 0 } : {}}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
                   {data.certifications.map((cert, index) => {
@@ -197,7 +189,7 @@ export default function CertificationsPage() {
                       >
                         {/* Glassmorphism card */}
                         <div
-                          className={`w-full h-full rounded-3xl p-8 flex flex-col justify-between overflow-hidden ${
+                          className={`w-full h-full rounded-[2rem] overflow-hidden ${
                             isSelected ? "shadow-2xl shadow-accent/20" : ""
                           }`}
                           style={{
@@ -207,36 +199,55 @@ export default function CertificationsPage() {
                             border: "1px solid rgba(255,255,255,0.15)",
                           }}
                         >
-                          {/* Top section */}
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <span className="text-xs text-white/50 uppercase tracking-wider">
-                                Certificate
-                              </span>
-                              <h4 className="text-lg font-semibold mt-1 line-clamp-2">
-                                {cert.title}
-                              </h4>
+                          {/* Certificate Image at the top */}
+                          {cert.image && (
+                            <div className="relative w-full h-48 bg-gradient-to-br from-white/5 to-transparent">
+                              <Image
+                                src={cert.image}
+                                alt={cert.title}
+                                fill
+                                className="object-contain p-6"
+                                onError={(e) => {
+                                  // Fallback if image fails to load
+                                  e.currentTarget.style.display = "none";
+                                }}
+                              />
                             </div>
-                            <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                              <BadgeCheck className="w-6 h-6 text-accent" />
-                            </div>
-                          </div>
+                          )}
 
-                          {/* Middle - issuer */}
-                          <div className="mt-auto">
-                            <p className="text-2xl font-light tracking-wider text-white/70">
-                              {cert.issuer}
-                            </p>
-                            <div className="flex justify-between items-end mt-4">
+                          {/* Card content */}
+                          <div className="p-8 flex flex-col justify-between h-[calc(100%-12rem)]">
+                            {/* Top section */}
+                            <div className="flex justify-between items-start">
                               <div>
-                                <span className="text-xs text-white/40 uppercase">
-                                  Issued
+                                <span className="text-xs text-white/50 uppercase tracking-wider">
+                                  Certificate
                                 </span>
-                                <p className="text-sm font-medium">
-                                  {cert.date}
-                                </p>
+                                <h4 className="text-lg font-semibold mt-1 line-clamp-2">
+                                  {cert.title}
+                                </h4>
                               </div>
-                              <div className="w-10 h-10 rounded-full bg-white/10" />
+                              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                                <BadgeCheck className="w-6 h-6 text-accent" />
+                              </div>
+                            </div>
+
+                            {/* Middle - issuer */}
+                            <div className="mt-auto">
+                              <p className="text-xl font-light tracking-wider text-white/70">
+                                {cert.issuer}
+                              </p>
+                              <div className="flex justify-between items-end mt-4">
+                                <div>
+                                  <span className="text-xs text-white/40 uppercase">
+                                    Issued
+                                  </span>
+                                  <p className="text-sm font-medium">
+                                    {cert.date}
+                                  </p>
+                                </div>
+                                <div className="w-10 h-10 rounded-full bg-white/10" />
+                              </div>
                             </div>
                           </div>
                         </div>
