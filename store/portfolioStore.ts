@@ -46,14 +46,12 @@ export interface SkillCategory {
   skills: string[];
 }
 
-// Highlight item for About page (icon-based cards)
 export interface HighlightItem {
-  icon: string; // Icon name: "Code2", "Lightbulb", "Target", "Rocket"
+  icon: string;
   title: string;
   desc: string;
 }
 
-// About page content
 export interface AboutPageContent {
   headline: string;
   headlineHighlight: string;
@@ -64,10 +62,24 @@ export interface AboutPageContent {
   whatDrivesMe: string[];
 }
 
-// Core competency for skills page summary
 export interface CoreCompetency {
   label: string;
   value: string;
+}
+
+export interface SeoConfig {
+  siteUrl: string;
+  twitterHandle: string;
+  defaultOgImage?: string;
+  pages: {
+    home: { title: string; description: string };
+    about: { title: string; description: string };
+    projects: { title: string; description: string };
+    skills: { title: string; description: string };
+    experience: { title: string; description: string };
+    certifications: { title: string; description: string };
+    contact: { title: string; description: string };
+  };
 }
 
 export interface PortfolioData {
@@ -81,14 +93,15 @@ export interface PortfolioData {
   linkedin: string;
   github: string;
   instagram: string;
+  contactFormAccessKey: string;
   experiences: Experience[];
   projects: Project[];
   certifications: Certification[];
   education: Education[];
   skillCategories: SkillCategory[];
-  // New fields for maximum flexibility
   aboutPage: AboutPageContent;
   coreCompetencies: CoreCompetency[];
+  seo: SeoConfig;
 }
 
 interface PortfolioState {
@@ -111,6 +124,7 @@ const defaultData: PortfolioData = {
   linkedin: "https://linkedin.com/in/jay-joshi2784",
   github: "https://github.com/imjayjoshi",
   instagram: "https://instagram.com/jay._.joshi._",
+  contactFormAccessKey: "225ba732-ab8b-4556-b146-cec8b349078d",
   skillCategories: [
     {
       name: "Programming Languages",
@@ -294,22 +308,22 @@ const defaultData: PortfolioData = {
       id: "1",
       title: "Generative AI: Fundamentals",
       issuer: "IBM",
-      date: "2024",
-      credentialUrl: "#",
+      date: "2025",
+      credentialUrl: "https://coursera.org/verify/specialization/EVYJ1FOGQVL6",
     },
     {
       id: "2",
       title: "Introduction to Software Engineering",
       issuer: "IBM",
-      date: "2024",
-      credentialUrl: "#",
+      date: "2025",
+      credentialUrl: "https://coursera.org/verify/5AI7IHCF69H7",
     },
     {
       id: "3",
       title: "AWS Fundamentals",
       issuer: "Amazon Web Services",
-      date: "2024",
-      credentialUrl: "#",
+      date: "2025",
+      credentialUrl: "https://coursera.org/verify/specialization/FAHTE3RW6J21",
     },
   ],
   education: [
@@ -386,13 +400,54 @@ const defaultData: PortfolioData = {
       "Problem solving & innovation",
     ],
   },
-  // Core competencies for skills page
   coreCompetencies: [
     { label: "Frontend", value: "React, Next.js, TypeScript" },
     { label: "Backend", value: "Node.js, Express, Django" },
     { label: "Database", value: "MongoDB, MySQL, PostgreSQL" },
     { label: "Tools", value: "Git, Docker, VS Code" },
   ],
+  seo: {
+    siteUrl: "https://jayjoshi.dev",
+    twitterHandle: "@jayjoshi278",
+    defaultOgImage: "/og-image.png",
+    pages: {
+      home: {
+        title: "Jay Joshi | Portfolio",
+        description:
+          "Full Stack Developer specializing in MERN stack and AI technologies. Building scalable, high-performance web applications.",
+      },
+      about: {
+        title: "About | Jay Joshi",
+        description:
+          "Learn about Jay Joshi - a passionate Full Stack Developer with expertise in React, Node.js, and modern web technologies.",
+      },
+      projects: {
+        title: "Projects | Jay Joshi",
+        description:
+          "Explore my portfolio of web applications built with React, Node.js, TypeScript, and AI technologies.",
+      },
+      skills: {
+        title: "Skills | Jay Joshi",
+        description:
+          "Technical skills and expertise in JavaScript, TypeScript, React, Node.js, MongoDB, and more.",
+      },
+      experience: {
+        title: "Experience | Jay Joshi",
+        description:
+          "Professional experience and educational background in software development and AI.",
+      },
+      certifications: {
+        title: "Certifications | Jay Joshi",
+        description:
+          "Professional certifications in AI, cloud computing, and software engineering.",
+      },
+      contact: {
+        title: "Contact | Jay Joshi",
+        description:
+          "Get in touch for collaboration, job opportunities, or project inquiries.",
+      },
+    },
+  },
 };
 
 export const usePortfolioStore = create<PortfolioState>()(
