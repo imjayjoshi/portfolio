@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { ScrollBackground } from "@/components/transitions/ScrollBackground";
+import { Footer } from "@/components/layout/Footer";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { Tilt3DCard } from "@/components/ui/Tilt3DCard";
 import { Code2, Lightbulb, Target, Rocket, LucideIcon } from "lucide-react";
@@ -194,6 +195,7 @@ export default function AboutPage() {
               );
             })()
           )}
+          <Footer />
         </div>
       </PageTransition>
     </Layout>

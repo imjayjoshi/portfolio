@@ -13,6 +13,7 @@ import {
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { ScrollBackground } from "@/components/transitions/ScrollBackground";
+import { Footer } from "@/components/layout/Footer";
 import { usePortfolioStore } from "@/store/portfolioStore";
 
 export default function CertificationsPage() {
@@ -262,6 +263,7 @@ export default function CertificationsPage() {
               </div>
             </div>
           </section>
+          <Footer />
         </div>
       </PageTransition>
     </Layout>
