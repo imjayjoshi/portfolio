@@ -401,7 +401,6 @@ const defaultData: PortfolioData = {
     whatDrivesMe: [
       "Building impactful solutions",
       "Learning new technologies",
-      "Open Source contributions",
       "Problem solving & innovation",
     ],
   },

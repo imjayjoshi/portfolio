@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { ScrollBackground } from "@/components/transitions/ScrollBackground";
-import { Footer } from "@/components/layout/Footer";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { Tilt3DCard } from "@/components/ui/Tilt3DCard";
 import { Code2, Lightbulb, Target, Rocket, LucideIcon } from "lucide-react";
@@ -32,7 +31,7 @@ export default function AboutPage() {
   return (
     <Layout showBackground={false}>
       <PageTransition>
-        <div className="relative min-h-screen">
+        <div className="relative">
           <ScrollBackground />
           {!isMounted ? (
             <div className="flex items-center justify-center min-h-[60vh]">
@@ -116,7 +115,10 @@ export default function AboutPage() {
                                   y: -5,
                                   borderColor: "rgba(var(--accent), 0.3)",
                                 }}
-                                transition={{ type: "spring", stiffness: 300 }}
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 300,
+                                }}
                               >
                                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
                                   <item.icon className="w-6 h-6 text-accent" />
@@ -195,7 +197,6 @@ export default function AboutPage() {
               );
             })()
           )}
-          <Footer />
         </div>
       </PageTransition>
     </Layout>

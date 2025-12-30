@@ -13,7 +13,6 @@ import {
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { ScrollBackground } from "@/components/transitions/ScrollBackground";
-import { Footer } from "@/components/layout/Footer";
 import { usePortfolioStore } from "@/store/portfolioStore";
 
 export default function CertificationsPage() {
@@ -42,7 +41,7 @@ export default function CertificationsPage() {
   return (
     <Layout showBackground={false}>
       <PageTransition>
-        <div className="relative min-h-screen">
+        <div className="relative">
           <ScrollBackground />
 
           <section className="section-padding relative z-10">
@@ -263,7 +262,6 @@ export default function CertificationsPage() {
               </div>
             </div>
           </section>
-          <Footer />
         </div>
       </PageTransition>
     </Layout>
