@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 const defaultSeo = {
   name: "Jay Joshi",
   title: "Full Stack Developer Portfolio",
-  siteUrl: "https://jayjoshi.dev",
+  siteUrl: "https://jay-joshi.vercel.app",
   twitterHandle: "@jayjoshi278",
   defaultOgImage: "/og-image.png",
 };

@@ -411,7 +411,7 @@ const defaultData: PortfolioData = {
     { label: "Tools", value: "Git, Docker, VS Code" },
   ],
   seo: {
-    siteUrl: "https://jayjoshi.dev",
+    siteUrl: "https://jay-joshi.vercel.app",
     twitterHandle: "@jayjoshi278",
     defaultOgImage: "/og-image.png",
     pages: {
