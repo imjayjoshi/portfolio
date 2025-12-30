@@ -79,7 +79,7 @@ export const HeroSection = () => {
           {data.roles.map((role, index) => (
             <React.Fragment key={role}>
               {index > 0 && (
-                <span className="hidden sm:inline text-muted-foreground mx-1 sm:mx-2 md:mx-3">
+                <span className="text-muted-foreground mx-1 sm:mx-2 md:mx-3">
                   •
                 </span>
               )}
