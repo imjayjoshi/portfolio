@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, Suspense } from "react";
-import { motion, useScroll, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
@@ -20,19 +20,20 @@ const ExperienceScene = dynamic(
 export default function ExperiencePage() {
   const { data, setBackgroundVariant } = usePortfolioStore();
   const headerRef = useRef(null);
-  const isHeaderInView = useInView(headerRef, { once: true });
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
   const experienceRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    setIsMounted(true);
     setBackgroundVariant("default");
   }, [setBackgroundVariant]);
 
   // Scroll progress for the timeline
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start center", "end center"],
+    offset: ["start start", "end end"],
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -68,6 +69,8 @@ export default function ExperiencePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [data.experiences.length]);
 
+  if (!isMounted) return null;
+
   return (
     <Layout showBackground={false}>
       <PageTransition>
@@ -85,7 +88,8 @@ export default function ExperiencePage() {
               <motion.div
                 ref={headerRef}
                 initial={{ opacity: 0, y: 30 }}
-                animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 className="text-center mb-12 md:mb-16"
               >
                 <div className="flex items-center justify-center gap-3 mb-4">

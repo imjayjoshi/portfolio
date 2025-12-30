@@ -18,10 +18,14 @@ import { usePortfolioStore } from "@/store/portfolioStore";
 export default function CertificationsPage() {
   const { data, setBackgroundVariant } = usePortfolioStore();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     setBackgroundVariant("minimal");
   }, [setBackgroundVariant]);
+
+  if (!isMounted) return null;
 
   const nextCard = () => {
     setSelectedIndex((prev) => (prev + 1) % data.certifications.length);

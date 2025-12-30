@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense, useRef } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { Layout } from "@/components/layout/Layout";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { ArrowLeft, ExternalLink, Github, ChevronDown } from "lucide-react";
@@ -124,7 +125,7 @@ export default function ProjectsPage() {
                 return (
                   <motion.div
                     key={project.id}
-                    className="relative h-[480px] md:h-[380px] perspective-1000"
+                    className="relative h-[420px] md:h-[400px] perspective-1000"
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -140,47 +141,49 @@ export default function ProjectsPage() {
                     >
                       {/* Front of card */}
                       <div
-                        className="absolute inset-0 glass-card p-6 md:p-8 group"
+                        className="absolute inset-0 glass-card p-6 md:p-8 group flex flex-col"
                         style={{ backfaceVisibility: "hidden" }}
                       >
                         {/* Card number */}
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center justify-between mb-8">
                           <span className="text-xs font-medium text-accent uppercase tracking-widest">
                             Project {String(index + 1).padStart(2, "0")}
                           </span>
                           <span className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-xs font-bold text-accent">
-                            {String(index + 1).padStart(2, "0")}
+                            {index + 1}
                           </span>
                         </div>
 
-                        <h3 className="text-xl md:text-2xl font-bold mb-3 group-hover:text-accent transition-colors">
-                          {project.title}
-                        </h3>
+                        <div className="flex-1">
+                          <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-accent transition-colors">
+                            {project.title}
+                          </h3>
 
-                        <p className="text-muted-foreground leading-relaxed mb-5 line-clamp-3">
-                          {project.description}
-                        </p>
+                          <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
+                            {project.shortDescription}
+                          </p>
 
-                        {/* Tech stack preview */}
-                        <div className="flex flex-wrap gap-2">
-                          {project.technologies.slice(0, 4).map((tech) => (
-                            <span
-                              key={tech}
-                              className="text-xs px-2.5 py-1 rounded-md bg-accent/10 text-accent/80 border border-accent/20"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                          {project.technologies.length > 4 && (
-                            <span className="text-xs px-2.5 py-1 text-muted-foreground">
-                              +{project.technologies.length - 4} more
-                            </span>
-                          )}
+                          {/* Tech stack preview */}
+                          <div className="flex flex-wrap gap-2">
+                            {project.technologies
+                              .slice(0, 5)
+                              .map((tech: string) => (
+                                <span
+                                  key={tech}
+                                  className="text-xs px-3 py-1 rounded-md bg-accent/10 text-accent/80 border border-accent/20"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                          </div>
                         </div>
 
                         {/* Click hint */}
-                        <div className="absolute bottom-4 right-4 text-xs text-muted-foreground">
-                          Click to see details →
+                        <div className="mt-8 text-xs text-muted-foreground flex items-center gap-2">
+                          <div className="w-4 h-4 rounded-full border border-muted-foreground/30 flex items-center justify-center">
+                            <ArrowLeft className="w-2.5 h-2.5 rotate-180" />
+                          </div>
+                          Click to see full details
                         </div>
                       </div>
 
@@ -209,7 +212,7 @@ export default function ProjectsPage() {
                               Tech Stack
                             </h4>
                             <div className="flex flex-wrap gap-1.5">
-                              {project.technologies.map((tech) => (
+                              {project.technologies.map((tech: string) => (
                                 <span
                                   key={tech}
                                   className="text-xs px-2 py-0.5 rounded bg-accent/10 text-accent/80"

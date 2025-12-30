@@ -7,7 +7,7 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Github, Linkedin, Instagram } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
@@ -62,136 +62,100 @@ const NavLink = ({
 }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
-  const linkRef = useRef<HTMLAnchorElement>(null);
-  const textRef = useRef<HTMLSpanElement>(null);
-  const bgRef = useRef<HTMLSpanElement>(null);
-  const { ref, springX, springY, handleMouseMove, handleMouseLeave } =
-    useMagneticHover();
   const { navigateWithTransition, isTransitioning } = usePageTransition();
-
-  const handleHoverEnter = () => {
-    if (bgRef.current && textRef.current) {
-      gsap.to(bgRef.current, {
-        scaleX: 1,
-        scaleY: 1,
-        opacity: 1,
-        duration: 0.4,
-        ease: "power3.out",
-      });
-      gsap.to(textRef.current, {
-        y: -2,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  };
-
-  const handleHoverLeave = () => {
-    handleMouseLeave();
-    if (bgRef.current && textRef.current) {
-      gsap.to(bgRef.current, {
-        scaleX: 0.8,
-        scaleY: 0.8,
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
-      });
-      gsap.to(textRef.current, {
-        y: 0,
-        duration: 0.2,
-        ease: "power2.out",
-      });
-    }
-  };
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-
     if (isTransitioning || href === pathname) return;
-
     onClick?.();
-
-    // Determine transition type: particle for home, glass for others
     const transitionType =
       href === "/" || pathname === "/" ? "particle" : "glass";
     navigateWithTransition(href, transitionType);
   };
 
+  // Split label into characters
+  const characters = label.split("");
+
   return (
-    <motion.div
-      style={{ x: springX, y: springY }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleHoverLeave}
-      onMouseEnter={handleHoverEnter}
+    <Link
+      href={href}
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="nav-link-awwwards group relative px-4 py-2 block overflow-hidden"
+      aria-current={isActive ? "page" : undefined}
     >
-      <Link
-        ref={(el) => {
-          (ref as React.MutableRefObject<HTMLAnchorElement | null>).current =
-            el;
-          (
-            linkRef as React.MutableRefObject<HTMLAnchorElement | null>
-          ).current = el;
+      {/* Original text - slides up on hover */}
+      <span className="relative z-10 flex overflow-hidden">
+        {characters.map((char, i) => (
+          <motion.span
+            key={i}
+            className={`inline-block text-sm font-medium ${
+              isActive ? "text-accent" : "text-muted-foreground"
+            }`}
+            animate={{
+              y: isHovered ? -20 : 0,
+              opacity: isHovered ? 0 : 1,
+            }}
+            transition={{
+              duration: 0.3,
+              delay: i * 0.02,
+              ease: [0.4, 0, 0.2, 1],
+            }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </motion.span>
+        ))}
+      </span>
+
+      {/* Clone text - slides in from below on hover */}
+      <span className="absolute top-2 left-4 z-10 flex overflow-hidden">
+        {characters.map((char, i) => (
+          <motion.span
+            key={i}
+            className="inline-block text-sm font-medium text-accent"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{
+              y: isHovered ? 0 : 20,
+              opacity: isHovered ? 1 : 0,
+            }}
+            transition={{
+              duration: 0.3,
+              delay: i * 0.02,
+              ease: [0.4, 0, 0.2, 1],
+            }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </motion.span>
+        ))}
+      </span>
+
+      {/* Gradient sweep line */}
+      <motion.span
+        className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-accent via-blue-400 to-accent"
+        initial={{ scaleX: 0, originX: 0 }}
+        animate={{
+          scaleX: isHovered || isActive ? 1 : 0,
         }}
-        href={href}
-        onClick={handleClick}
-        className="nav-link-modern group relative px-5 py-2.5 block"
-        aria-current={isActive ? "page" : undefined}
-      >
-        {/* Morphing background blob */}
-        <span
-          ref={bgRef}
-          className="absolute inset-0 rounded-full pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(135deg, hsl(var(--accent) / 0.15) 0%, hsl(var(--accent) / 0.08) 100%)",
-            transform: "scale(0.8)",
-            opacity: 0,
-          }}
-        />
+        transition={{
+          duration: 0.4,
+          ease: [0.4, 0, 0.2, 1],
+        }}
+        style={{ width: "100%" }}
+      />
 
-        {/* Bottom line that grows on hover */}
-        <motion.span
-          className="absolute bottom-1 left-1/2 h-[2px] rounded-full"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, hsl(var(--accent)), transparent)",
-          }}
-          initial={{ width: isActive ? "50%" : "0%", x: "-50%" }}
-          whileHover={{ width: "70%" }}
-          animate={{ width: isActive ? "50%" : "0%", x: "-50%" }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        />
-
-        {/* Text */}
-        <span
-          ref={textRef}
-          className={`relative z-10 text-sm font-medium inline-block transition-colors duration-300 ${
-            isActive
-              ? "text-accent"
-              : "text-muted-foreground group-hover:text-foreground"
-          }`}
-        >
-          {label}
-        </span>
-
-        {/* Active indicator dot */}
-        <AnimatePresence>
-          {isActive && (
-            <motion.span
-              className="absolute -bottom-0.5 left-1/2 w-1 h-1 rounded-full bg-accent"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              style={{
-                x: "-50%",
-                boxShadow:
-                  "0 0 10px hsl(var(--accent)), 0 0 20px hsl(var(--accent) / 0.5)",
-              }}
-            />
-          )}
-        </AnimatePresence>
-      </Link>
-    </motion.div>
+      {/* Glow effect on hover */}
+      <motion.span
+        className="absolute inset-0 rounded-lg pointer-events-none"
+        animate={{
+          boxShadow: isHovered
+            ? "0 0 20px hsl(var(--accent) / 0.15), inset 0 0 20px hsl(var(--accent) / 0.05)"
+            : "0 0 0px transparent",
+        }}
+        transition={{ duration: 0.3 }}
+      />
+    </Link>
   );
 };
 
@@ -203,20 +167,26 @@ export const Navbar = () => {
   const pathname = usePathname();
   const { navigateWithTransition, isTransitioning } = usePageTransition();
 
-  // Generate initials from name (e.g., "Jay Joshi" -> "JJ")
-  const initials = data.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Generate initials from name (e.g., "Jay Joshi" -> "JJ")
+  // Fallback to "JJ" if data is not available yet (ssr)
+  const initials = isMounted
+    ? data.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+    : "JJ";
 
   // Logo hover animation
   const handleLogoHover = () => {
@@ -248,22 +218,32 @@ export const Navbar = () => {
   return (
     <>
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? "glass-navbar py-2 shadow-lg"
-            : "bg-background/50 backdrop-blur-sm py-4"
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+          isScrolled ? "py-3" : "py-6"
         }`}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.2 }}
       >
+        {/* Glass Background Layer - Only visible when scrolled */}
+        <AnimatePresence>
+          {isScrolled && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 z-[-1] glass-navbar shadow-[0_8px_32px_rgba(0,0,0,0.4)] border-b border-white/10 [backdrop-filter:blur(24px)_saturate(200%)_brightness(1.1)]"
+            />
+          )}
+        </AnimatePresence>
+
         <nav className="container-main flex items-center justify-between px-6">
           {/* Logo */}
           <Link
             ref={logoRef}
             href="/"
             onClick={handleLogoClick}
-            className="font-display font-bold text-2xl tracking-tight relative overflow-hidden"
+            className="font-display font-bold text-2xl tracking-tight relative z-10"
             aria-label={`${data.name} logo`}
             onMouseEnter={handleLogoHover}
             onMouseLeave={handleLogoLeave}
@@ -296,82 +276,100 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Awwwards Style */}
           <motion.button
-            className="md:hidden p-2 text-foreground hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg relative overflow-hidden"
+            className="md:hidden relative z-[10001] flex flex-col items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMobileMenuOpen}
-            whileTap={{ scale: 0.95 }}
           >
-            <AnimatePresence mode="wait">
-              {isMobileMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <X size={24} />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Menu size={24} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div className="w-6 h-4 relative">
+              <motion.span
+                className="absolute left-0 w-full h-0.5 bg-foreground"
+                animate={{
+                  top: isMobileMenuOpen ? "50%" : "0%",
+                  rotate: isMobileMenuOpen ? 45 : 0,
+                  translateY: isMobileMenuOpen ? -1 : 0,
+                }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              />
+              <motion.span
+                className="absolute left-0 top-1/2 w-full h-0.5 bg-foreground -translate-y-1/2"
+                animate={{
+                  opacity: isMobileMenuOpen ? 0 : 1,
+                  scaleX: isMobileMenuOpen ? 0 : 1,
+                }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.span
+                className="absolute left-0 w-full h-0.5 bg-foreground"
+                animate={{
+                  bottom: isMobileMenuOpen ? "50%" : "0%",
+                  rotate: isMobileMenuOpen ? -45 : 0,
+                  translateY: isMobileMenuOpen ? 1 : 0,
+                }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </div>
           </motion.button>
         </nav>
       </motion.header>
 
-      {/* Mobile Menu - Full Screen Overlay */}
+      {/* Mobile Menu - Awwwards Style Full Screen Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden fixed inset-0 z-[9999] bg-background/95 backdrop-blur-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            className="md:hidden fixed inset-0 z-[9999] bg-background flex flex-col pt-32 px-10"
+            initial={{ clipPath: "circle(0% at top right)" }}
+            animate={{ clipPath: "circle(150% at top right)" }}
+            exit={{ clipPath: "circle(0% at top right)" }}
+            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
           >
-            {/* Close button */}
-            <button
-              className="absolute top-6 right-6 p-3 text-foreground hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg bg-background/50 backdrop-blur-sm border border-border/30 z-50"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Close menu"
-              type="button"
-            >
-              <X size={28} />
-            </button>
+            {/* Grainy background effect */}
+            <div
+              className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+              }}
+            />
 
-            {/* Menu links */}
-            <div className="flex flex-col items-center justify-center h-full gap-8 py-20">
+            {/* Premium Close Button inside menu */}
+            <motion.button
+              className="absolute top-8 right-10 flex items-center gap-2 group z-[10002]"
+              onClick={() => setIsMobileMenuOpen(false)}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <span className="text-xs uppercase tracking-[0.4em] font-medium text-muted-foreground group-hover:text-accent transition-colors">
+                Close
+              </span>
+              <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-accent group-active:scale-95 transition-all">
+                <X size={20} className="group-hover:text-white" />
+              </div>
+            </motion.button>
+
+            <div className="flex flex-col gap-4 relative z-10">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">
+                Navigation
+              </p>
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{
-                    delay: index * 0.08,
-                    duration: 0.4,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
+                  className="relative group"
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
                 >
+                  <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-[10px] font-mono opacity-30 group-hover:opacity-100 transition-opacity">
+                    0{index + 1}
+                  </span>
                   <Link
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`text-4xl sm:text-5xl font-bold tracking-tight transition-colors duration-300 ${
+                    className={`text-5xl sm:text-6xl font-bold tracking-tight py-2 block ${
                       pathname === link.href
-                        ? "text-accent"
-                        : "text-foreground hover:text-accent"
+                        ? "gradient-text"
+                        : "text-foreground hover:text-accent transition-colors"
                     }`}
                     style={{ fontFamily: "'Raleway', sans-serif" }}
                   >
@@ -379,6 +377,51 @@ export const Navbar = () => {
                   </Link>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="mt-auto pb-10 flex flex-col gap-6 relative z-10">
+              <div className="h-[1px] w-full bg-white/10" />
+              <div className="flex justify-between items-end">
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                    Get in touch
+                  </p>
+                  <a
+                    href={`mailto:${data.email}`}
+                    className="text-sm hover:text-accent transition-colors block"
+                  >
+                    {data.email}
+                  </a>
+                </div>
+                <div className="flex gap-4">
+                  {[
+                    { icon: Github, href: data.github, label: "GitHub" },
+                    { icon: Linkedin, href: data.linkedin, label: "LinkedIn" },
+                    {
+                      icon: Instagram,
+                      href: data.instagram,
+                      label: "Instagram",
+                    },
+                  ].map((social, i) => {
+                    const Icon = social.icon;
+                    return (
+                      <motion.a
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 + i * 0.1 }}
+                        whileHover={{ y: -4 }}
+                      >
+                        <Icon size={18} />
+                      </motion.a>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

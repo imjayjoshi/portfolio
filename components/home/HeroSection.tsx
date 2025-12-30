@@ -2,78 +2,28 @@
 
 import dynamic from "next/dynamic";
 import React, { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Download, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import gsap from "gsap";
 import { usePortfolioStore } from "@/store/portfolioStore";
 
-// Lazy load WebGL scene
-const HeroScene = dynamic(
-  () =>
-    import("@/components/three/HeroScene").then((mod) => ({
-      default: mod.HeroScene,
-    })),
-  {
-    ssr: false,
-    loading: () => null,
-  }
-);
-
 export const HeroSection = () => {
   const { data } = usePortfolioStore();
   const containerRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Scroll tracking
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  // Transform scroll to 0-1 for WebGL
-  const scrollProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const [scrollValue, setScrollValue] = useState(0);
-
-  useEffect(() => {
-    const unsubscribe = scrollProgress.on("change", setScrollValue);
-    return () => unsubscribe();
-  }, [scrollProgress]);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX / window.innerWidth,
-        y: e.clientY / window.innerHeight,
-      });
-    };
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const isInView = useInView(containerRef, { once: true });
 
   useEffect(() => {
     if (nameRef.current) {
       const chars = nameRef.current.querySelectorAll(".char");
       gsap.fromTo(
         chars,
-        { opacity: 0, y: 60 },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 0.8,
           stagger: 0.04,
           ease: "power3.out",
           delay: 0.5,
@@ -93,21 +43,16 @@ export const HeroSection = () => {
       ref={containerRef}
       className="min-h-screen flex items-center justify-center relative overflow-hidden"
     >
-      {/* WebGL Scene - Desktop only */}
-      {!isMobile && (
-        <HeroScene scrollProgress={scrollValue} mousePosition={mousePosition} />
-      )}
-
-      {/* Mobile gradient fallback */}
-      {isMobile && (
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 to-transparent -z-10" />
-      )}
+      {/* Background Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[800px] sm:h-[600px] bg-accent/5 rounded-full blur-[80px] sm:blur-[120px]" />
+      </div>
 
       {/* Content overlay */}
-      <div className="container-main relative z-10 text-center px-6 pt-18 md:pt-0">
+      <div className="container-main relative z-10 text-center px-4 sm:px-6 pt-20 sm:pt-24 md:pt-0">
         {/* Identity line */}
         <motion.p
-          className="text-lg text-muted-foreground"
+          className="text-base sm:text-lg text-muted-foreground"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -118,7 +63,7 @@ export const HeroSection = () => {
         {/* Name */}
         <h1
           ref={nameRef}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter mb-6"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tighter mb-4 sm:mb-6"
           style={{ fontFamily: "'Raleway', sans-serif" }}
         >
           {nameChars}
@@ -126,7 +71,7 @@ export const HeroSection = () => {
 
         {/* Role */}
         <motion.h2
-          className="text-xl sm:text-2xl md:text-3xl font-medium mb-8"
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium mb-6 sm:mb-8 flex flex-wrap justify-center gap-1 sm:gap-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
@@ -134,7 +79,9 @@ export const HeroSection = () => {
           {data.roles.map((role, index) => (
             <React.Fragment key={role}>
               {index > 0 && (
-                <span className="text-muted-foreground mx-3">•</span>
+                <span className="hidden sm:inline text-muted-foreground mx-1 sm:mx-2 md:mx-3">
+                  •
+                </span>
               )}
               <span className="gradient-text">{role}</span>
             </React.Fragment>
@@ -143,7 +90,7 @@ export const HeroSection = () => {
 
         {/* Bio */}
         <motion.p
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12 leading-relaxed px-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
@@ -153,22 +100,32 @@ export const HeroSection = () => {
 
         {/* CTAs */}
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.2 }}
         >
-          <Link href="/projects" className="btn-primary group">
+          <Link
+            href="/projects"
+            className="btn-primary group w-full sm:w-auto text-sm sm:text-base"
+          >
             View Projects
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
 
-          <a href="/resume.pdf" download className="btn-secondary">
+          <a
+            href="/resume.pdf"
+            download
+            className="btn-secondary w-full sm:w-auto text-sm sm:text-base"
+          >
             <Download className="mr-2 w-4 h-4" />
             Download Resume
           </a>
 
-          <Link href="/contact" className="btn-secondary">
+          <Link
+            href="/contact"
+            className="btn-secondary w-full sm:w-auto text-sm sm:text-base"
+          >
             <Mail className="mr-2 w-4 h-4" />
             Contact Me
           </Link>

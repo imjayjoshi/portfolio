@@ -17,7 +17,6 @@ export interface Project {
   title: string;
   shortDescription: string;
   description: string;
-  image?: string;
   technologies: string[];
   liveUrl?: string;
   githubUrl?: string;
@@ -107,12 +106,15 @@ export interface PortfolioData {
 interface PortfolioState {
   data: PortfolioData;
   certificationBgEnabled: boolean;
+  backgroundVariant: "minimal" | "default" | "enhanced";
   setData: (data: Partial<PortfolioData>) => void;
   setCertificationBg: (enabled: boolean) => void;
+  setBackgroundVariant: (variant: "minimal" | "default" | "enhanced") => void;
   resetToDefault: () => void;
 }
 
 const defaultData: PortfolioData = {
+  // ... existing data ...
   name: "Jay Joshi",
   title: "Full Stack Developer",
   roles: ["Full Stack Developer", "MERN Stack Developer", "AI Enthusiast"],
@@ -309,6 +311,7 @@ const defaultData: PortfolioData = {
       title: "Generative AI: Fundamentals",
       issuer: "IBM",
       date: "2025",
+      image: "/certifications/ibm-genai.png",
       credentialUrl: "https://coursera.org/verify/specialization/EVYJ1FOGQVL6",
     },
     {
@@ -316,6 +319,7 @@ const defaultData: PortfolioData = {
       title: "Introduction to Software Engineering",
       issuer: "IBM",
       date: "2025",
+      image: "/certifications/ibm-software.png",
       credentialUrl: "https://coursera.org/verify/5AI7IHCF69H7",
     },
     {
@@ -323,6 +327,7 @@ const defaultData: PortfolioData = {
       title: "AWS Fundamentals",
       issuer: "Amazon Web Services",
       date: "2025",
+      image: "/certifications/aws-fundamentals.png",
       credentialUrl: "https://coursera.org/verify/specialization/FAHTE3RW6J21",
     },
   ],
@@ -455,15 +460,18 @@ export const usePortfolioStore = create<PortfolioState>()(
     (set) => ({
       data: defaultData,
       certificationBgEnabled: true,
+      backgroundVariant: "minimal",
       setData: (newData) =>
         set((state) => ({
           data: { ...state.data, ...newData },
         })),
       setCertificationBg: (enabled) => set({ certificationBgEnabled: enabled }),
+      setBackgroundVariant: (variant) => set({ backgroundVariant: variant }),
       resetToDefault: () => set({ data: defaultData }),
     }),
     {
       name: "portfolio-storage",
+      version: 1,
     }
   )
 );
