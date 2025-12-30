@@ -26,6 +26,25 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Jay Joshi",
+              url: "https://jay-joshi.vercel.app",
+              jobTitle: "Full Stack Developer",
+              sameAs: [
+                "https://github.com/imjayjoshi", // Assuming this from the context
+                "https://linkedin.com/in/jay-joshi2708", // Assuming this pattern
+                "https://twitter.com/jayjoshi278",
+              ],
+              description:
+                "Full Stack Developer specializing in MERN stack and AI technologies.",
+            }),
+          }}
+        />
       </head>
       <body>
         <Providers>{children}</Providers>

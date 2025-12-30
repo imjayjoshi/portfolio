@@ -3,10 +3,23 @@ import type { Metadata } from "next";
 // Default SEO configuration (used at build time)
 const defaultSeo = {
   name: "Jay Joshi",
-  title: "Full Stack Developer Portfolio",
+  title: "Jay Joshi - Full Stack Developer | Portfolio",
   siteUrl: "https://jay-joshi.vercel.app",
   twitterHandle: "@jayjoshi278",
   defaultOgImage: "/og-image.png",
+  keywords: [
+    "Jay Joshi",
+    "Jay Joshi Portfolio",
+    "Full Stack Developer India",
+    "Jay Joshi Vercel Portfolio",
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript expert",
+    "MERN Stack Developer",
+    "AI Engineer",
+    "Software Portfolio",
+    "Jay Joshi GitHub",
+  ].join(", "),
 };
 
 type PageKey =
@@ -61,7 +74,7 @@ export function generatePageMetadata(page: PageKey): Metadata {
     metadataBase: new URL(defaultSeo.siteUrl),
     title: seo.title,
     description: seo.description,
-    keywords: `${defaultSeo.name}, Full Stack Developer, React, TypeScript, Node.js, Portfolio`,
+    keywords: defaultSeo.keywords,
     authors: [{ name: defaultSeo.name }],
     openGraph: {
       title: seo.title,
