@@ -72,16 +72,19 @@ export function generatePageMetadata(page: PageKey): Metadata {
 
   return {
     metadataBase: new URL(defaultSeo.siteUrl),
+    applicationName: "Jay Joshi Portfolio",
     title: seo.title,
     description: seo.description,
     keywords: defaultSeo.keywords,
     authors: [{ name: defaultSeo.name }],
+    creator: defaultSeo.name,
+    publisher: defaultSeo.name,
     openGraph: {
       title: seo.title,
       description: seo.description,
       type: "website",
       url: `${defaultSeo.siteUrl}${page === "home" ? "" : `/${page}`}`,
-      siteName: `${defaultSeo.name} Portfolio`,
+      siteName: "Jay Joshi Portfolio",
       images: [
         {
           url: defaultSeo.defaultOgImage,
