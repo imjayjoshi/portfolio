@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { Download, Mail, ArrowRight } from "lucide-react";
+import { ExternalLink, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import gsap from "gsap";
 import { usePortfolioStore } from "@/store/portfolioStore";
@@ -114,12 +114,13 @@ export const HeroSection = () => {
           </Link>
 
           <a
-            href="/resume.pdf"
-            download
+            href="https://docs.google.com/document/d/19ok9A6In6SKKw_XnyxSmgBTaz6-uiBpp8YJowNIvsRM/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-secondary w-full sm:w-auto text-sm sm:text-base"
           >
-            <Download className="mr-2 w-4 h-4" />
-            Download Resume
+            <ExternalLink className="mr-2 w-4 h-4" />
+            Resume
           </a>
 
           <Link
