@@ -123,9 +123,9 @@ const defaultData: PortfolioData = {
   email: "jayjoshi2784@gmail.com",
   phone: "8238061585",
   location: "Ahmedabad, India",
-  linkedin: "https://linkedin.com/in/jay-joshi2784",
-  github: "https://github.com/imjayjoshi",
-  instagram: "https://instagram.com/jay._.joshi._",
+  linkedin: "https://www.linkedin.com/in/jay-joshi2708/",
+  github: "https://www.github.com/imjayjoshi",
+  instagram: "https://www.instagram.com/jay._.joshi._",
   contactFormAccessKey: "225ba732-ab8b-4556-b146-cec8b349078d",
   skillCategories: [
     {

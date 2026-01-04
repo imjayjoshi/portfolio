@@ -114,7 +114,7 @@ export const HeroSection = () => {
           </Link>
 
           <a
-            href="https://docs.google.com/document/d/19ok9A6In6SKKw_XnyxSmgBTaz6-uiBpp8YJowNIvsRM/edit?usp=sharing"
+            href="https://drive.google.com/file/d/1fxboKbaALo1_2bfdnPnY1_y4vZ8rv1xK/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-secondary w-full sm:w-auto text-sm sm:text-base"
