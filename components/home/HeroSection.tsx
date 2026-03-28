@@ -7,6 +7,7 @@ import { ExternalLink, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import gsap from "gsap";
 import { usePortfolioStore } from "@/store/portfolioStore";
+import { ModernButton } from "@/components/ui/ModernButton";
 
 export const HeroSection = () => {
   const { data } = usePortfolioStore();
@@ -27,7 +28,7 @@ export const HeroSection = () => {
           stagger: 0.04,
           ease: "power3.out",
           delay: 0.5,
-        }
+        },
       );
     }
   }, []);
@@ -38,10 +39,21 @@ export const HeroSection = () => {
     </span>
   ));
 
+  // Navigation handlers
+  const handleScrollToProjects = () => {
+    const section = document.getElementById("projects");
+    if (section) section.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleScrollToContact = () => {
+    const section = document.getElementById("contact");
+    if (section) section.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section
       ref={containerRef}
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      className="min-h-[70vh] md:min-h-[85vh] flex items-center justify-center relative overflow-hidden"
     >
       {/* Background Glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -100,36 +112,37 @@ export const HeroSection = () => {
 
         {/* CTAs */}
         <motion.div
-          className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4"
+          className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-6"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 1.2 }}
         >
-          <Link
-            href="/projects"
-            className="btn-primary group w-full sm:w-auto text-sm sm:text-base"
+          <ModernButton
+            onClick={handleScrollToProjects}
+            showArrow
+            className="w-full sm:w-auto min-w-[180px]"
           >
             View Projects
-            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          </ModernButton>
 
-          <a
-            href="https://drive.google.com/file/d/1fxboKbaALo1_2bfdnPnY1_y4vZ8rv1xK/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary w-full sm:w-auto text-sm sm:text-base"
+          <ModernButton
+            onClick={() =>
+              window.open(
+                "https://drive.google.com/file/d/1fxboKbaALo1_2bfdnPnY1_y4vZ8rv1xK/view?usp=sharing",
+                "_blank",
+              )
+            }
+            className="w-full sm:w-auto min-w-[180px]"
           >
-            <ExternalLink className="mr-2 w-4 h-4" />
             Resume
-          </a>
+          </ModernButton>
 
-          <Link
-            href="/contact"
-            className="btn-secondary w-full sm:w-auto text-sm sm:text-base"
+          <ModernButton
+            onClick={handleScrollToContact}
+            className="w-full sm:w-auto min-w-[180px]"
           >
-            <Mail className="mr-2 w-4 h-4" />
             Contact Me
-          </Link>
+          </ModernButton>
         </motion.div>
       </div>
 

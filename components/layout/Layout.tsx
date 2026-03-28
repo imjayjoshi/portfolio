@@ -20,7 +20,6 @@ export const Layout = ({ children, showBackground = true }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col overflow-x-hidden">
       {showBackground && <ScrollBackground />}
-      <MagneticCursor />
       <ScrollProgress />
       <Navbar />
       <main className="flex-1 relative z-10">{children}</main>

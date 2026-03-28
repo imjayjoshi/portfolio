@@ -1,17 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, Github, Linkedin, Instagram } from "lucide-react";
 import { usePortfolioStore } from "@/store/portfolioStore";
 
 export const Footer = () => {
   const { data } = usePortfolioStore();
 
+  const socialLinks = [
+    { icon: Github, href: data.github, label: "GitHub" },
+    { icon: Linkedin, href: data.linkedin, label: "LinkedIn" },
+    { icon: Instagram, href: data.instagram, label: "Instagram" },
+  ];
+
   return (
-    <footer className="w-full py-6 border-t border-border/20 bg-background/50 backdrop-blur-sm">
-      <div className="container-main flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-sm text-muted-foreground font-medium">
-        <div className="flex items-center gap-2">
-          <span>Created with</span>
+    <footer className="w-full py-8 border-t border-border/10 bg-black/20 backdrop-blur-md">
+      <div className="container-main flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 px-6">
+        {/* Left: Credits */}
+        <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
+          <span className="opacity-80">Created with</span>
           <motion.div
             animate={{
               scale: [1, 1.2, 1],
@@ -25,30 +32,27 @@ export const Footer = () => {
           >
             <Heart size={14} fill="currentColor" />
           </motion.div>
-          <span>by</span>
-          <span className="text-foreground font-bold hover:text-accent transition-colors">
+          <span className="opacity-80">by</span>
+          <span className="text-foreground font-bold hover:text-blue-500 transition-colors cursor-default">
             {data.name}
           </span>
         </div>
 
-        <span className="hidden md:inline text-border/40">|</span>
-
-        <div className="flex gap-4">
-          {[
-            { label: "Github", href: data.github },
-            { label: "LinkedIn", href: data.linkedin },
-            { label: "Instagram", href: data.instagram },
-          ].map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
+        {/* Right: Social Icons */}
+        <div className="flex items-center gap-6">
+          {socialLinks.map((social) => (
+            <motion.a
+              key={social.label}
+              href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-accent transition-colors relative group"
+              className="text-muted-foreground hover:text-blue-500 transition-all duration-300"
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label={social.label}
             >
-              {link.label}
-              <motion.span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all duration-300" />
-            </a>
+              <social.icon size={20} strokeWidth={1.5} />
+            </motion.a>
           ))}
         </div>
       </div>

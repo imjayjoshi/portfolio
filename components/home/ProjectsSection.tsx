@@ -7,12 +7,12 @@ import { usePortfolioStore } from "@/store/portfolioStore";
 import {
   ExternalLink,
   Github,
-  ArrowRight,
   Rocket,
   Globe,
   Code,
 } from "lucide-react";
-import Link from "next/link";
+import { usePageTransition } from "@/components/transitions";
+import { ModernButton } from "@/components/ui/ModernButton";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -47,6 +47,7 @@ export const ProjectsSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { data } = usePortfolioStore();
   const [isMounted, setIsMounted] = useState(false);
+  const { navigateWithTransition } = usePageTransition();
 
   useEffect(() => {
     setIsMounted(true);
@@ -60,7 +61,7 @@ export const ProjectsSection = () => {
       <div className="container-main">
         {/* Section header with animations */}
         <motion.div
-          className="text-center mb-10 sm:mb-12 md:mb-16"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
@@ -224,18 +225,12 @@ export const ProjectsSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 1 }}
         >
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-accent/30 text-accent hover:bg-accent/10 transition-all group"
+          <ModernButton
+            onClick={() => navigateWithTransition("/projects", "glass")}
+            showArrow
           >
-            <span className="font-medium">View All Projects</span>
-            <motion.span
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <ArrowRight className="w-5 h-5" />
-            </motion.span>
-          </Link>
+            View All Projects
+          </ModernButton>
         </motion.div>
       </div>
     </section>

@@ -81,7 +81,7 @@ export const AboutSection = () => {
 
           {/* Heading with perspective reveal */}
           <motion.div
-            className="overflow-hidden mb-8 sm:mb-10 md:mb-12"
+            className="overflow-hidden mb-6 sm:mb-8 md:mb-10"
             style={{ perspective: "1000px" }}
           >
             <motion.h2
@@ -135,7 +135,7 @@ export const AboutSection = () => {
 
           {/* Scroll indicator */}
           <motion.div
-            className="mt-16"
+            className="mt-12"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ delay: 1.2 }}
