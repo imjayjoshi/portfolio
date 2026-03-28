@@ -6,13 +6,13 @@ import { usePortfolioStore } from "@/store/portfolioStore";
 import {
   Mail,
   MapPin,
-  Send,
   Github,
   Linkedin,
   Instagram,
   ArrowUpRight,
 } from "lucide-react";
 import Link from "next/link";
+import { ModernButton } from "@/components/ui/ModernButton";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -61,7 +61,7 @@ export const ContactSection = () => {
       <div className="container-main relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-10 sm:mb-12 md:mb-16"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
@@ -141,11 +141,10 @@ export const ContactSection = () => {
               variants={itemVariants}
               href={`mailto:${data.email}`}
               className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-accent/5 transition-all group"
-              whileHover={{ x: 8 }}
             >
               <motion.div
                 className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center flex-shrink-0"
-                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileHover={{ rotate: 5 }}
               >
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
               </motion.div>
@@ -197,7 +196,7 @@ export const ContactSection = () => {
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ delay: 0.6 + index * 0.1 }}
-                    whileHover={{ scale: 1.1, y: -4 }}
+                    // whileHover={{ y: -4 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label={social.label}
                   >
@@ -210,25 +209,16 @@ export const ContactSection = () => {
 
           {/* CTA Button */}
           <motion.div
-            className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-border/50 text-center"
+            className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border/50 text-center"
             variants={itemVariants}
           >
-            <Link href="/contact" className="inline-block w-full sm:w-auto">
-              <motion.button
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-accent text-white font-bold text-sm sm:text-base hover:bg-accent/90 transition-all shadow-lg shadow-accent/20"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Send Message</span>
-                <motion.span
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <ArrowUpRight size={16} />
-                </motion.span>
-              </motion.button>
-            </Link>
+            <ModernButton
+              onClick={() => (window.location.href = `mailto:${data.email}`)}
+              showArrow
+              className="w-full sm:w-auto min-w-[200px]"
+            >
+              Send Message
+            </ModernButton>
           </motion.div>
         </motion.div>
       </div>

@@ -50,8 +50,8 @@
     --glow-accent: 0 0 60px hsl(210 100% 50% / 0.15);
 
     /* Glass */
-    --glass-bg: hsl(220 15% 10% / 0.75);
-    --glass-border: hsl(220 12% 25% / 0.5);
+    --glass-bg: hsl(220 15% 10% / 0.45);
+    --glass-border: hsl(220 12% 25% / 0.3);
     --glass-blur: 24px;
 
     --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -137,12 +137,12 @@
 
   /* Section padding */
   .section-padding {
-    @apply py-24 md:py-32 lg:py-40 px-6;
+    @apply py-16 md:py-20 lg:py-24 px-6;
   }
 
   /* Container */
   .container-main {
-    @apply max-w-6xl mx-auto;
+    @apply max-w-[1600px] mx-auto;
   }
 
   /* Gradient text */
@@ -153,100 +153,30 @@
     background-clip: text;
   }
 
-  /* Primary CTA Button - With wave fill effect */
-  .btn-primary {
-    @apply inline-flex items-center justify-center px-7 py-3.5 text-sm font-semibold rounded-xl relative overflow-hidden;
-    background: var(--gradient-accent);
-    color: white;
-    box-shadow: 0 4px 20px hsl(210 100% 50% / 0.25);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.4s ease;
-  }
-
-  .btn-primary::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(100%);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .btn-primary:hover::before {
-    transform: translateY(0);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px hsl(210 100% 50% / 0.4);
-  }
-
-  .btn-primary > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Secondary Button - With wave fill effect */
-  .btn-secondary {
-    @apply inline-flex items-center justify-center px-7 py-3.5 text-sm font-semibold rounded-xl relative overflow-hidden;
-    background: transparent;
-    border: 1px solid var(--glass-border);
-    color: hsl(var(--foreground));
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.4s ease, color 0.4s ease;
-  }
-
-  .btn-secondary::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: hsl(var(--accent) / 0.15);
-    transform: translateY(100%);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .btn-secondary:hover::before {
-    transform: translateY(0);
-  }
-
-  .btn-secondary:hover {
-    border-color: hsl(var(--accent) / 0.6);
-    color: hsl(var(--accent));
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Accent Button - Same style as primary but for forms */
+  /* Unified Modern Button Base Style - Matching User Reference (Smoothed) */
+  .btn-primary,
+  .btn-secondary,
   .btn-accent {
-    @apply inline-flex items-center justify-center px-7 py-4 text-sm font-semibold rounded-xl relative overflow-hidden;
-    background: hsl(var(--accent));
-    color: hsl(var(--accent-foreground));
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.4s ease;
+    @apply inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium rounded-full relative overflow-hidden transition-all duration-300;
+    background: hsla(220, 15%, 5%, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1.5px solid hsla(210, 100%, 50%, 0.3); /* Smoother Azure Blue Border */
+    color: hsla(210, 100%, 60%, 1); /* Azure Blue Text */
+    box-shadow: 0 0 0 1px inset hsla(210, 100%, 50%, 0.05); /* Anti-alias softening */
   }
 
-  .btn-accent::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(100%);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .btn-accent:hover::before {
-    transform: translateY(0);
-  }
-
+  .btn-primary:hover,
+  .btn-secondary:hover,
   .btn-accent:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px hsl(var(--accent) / 0.3);
+    border-color: hsla(210, 100%, 60%, 0.6);
+    background: hsla(210, 100%, 50%, 0.1);
+    box-shadow: 0 0 30px hsla(210, 100%, 50%, 0.15), 0 0 0 1px inset hsla(210, 100%, 50%, 0.1);
+    transform: translateY(-1px);
+    color: hsla(210, 100%, 75%, 1);
   }
 
+  .btn-primary > *,
+  .btn-secondary > *,
   .btn-accent > * {
     position: relative;
     z-index: 1;

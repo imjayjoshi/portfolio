@@ -7,7 +7,8 @@ import Image from "next/image";
 import { Layout } from "@/components/layout/Layout";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { ArrowLeft, ExternalLink, Github, ChevronDown } from "lucide-react";
-import Link from "next/link";
+import { usePageTransition } from "@/components/transitions";
+import { ModernButton } from "@/components/ui/ModernButton";
 
 const FloatingDeckScene = dynamic(
   () =>
@@ -21,6 +22,7 @@ export default function ProjectsPage() {
   const { data, setBackgroundVariant } = usePortfolioStore();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
+  const { navigateWithTransition } = usePageTransition();
 
   useEffect(() => {
     setBackgroundVariant("enhanced");
@@ -224,30 +226,28 @@ export default function ProjectsPage() {
                           </div>
 
                           {/* Links */}
-                          <div className="flex gap-3 pt-4 border-t border-border">
+                          <div className="flex gap-4 pt-4 border-t border-border">
                             {project.liveUrl && project.liveUrl !== "#" && (
-                              <a
-                                href={project.liveUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-primary flex-1 text-center"
-                                onClick={(e) => e.stopPropagation()}
+                              <ModernButton
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(project.liveUrl, "_blank");
+                                }}
+                                className="flex-1 py-2.5 px-4"
                               >
-                                <ExternalLink className="w-4 h-4 mr-2" />
-                                <span>Live Demo</span>
-                              </a>
+                                Live Demo
+                              </ModernButton>
                             )}
                             {project.githubUrl && project.githubUrl !== "#" && (
-                              <a
-                                href={project.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-secondary flex-1 text-center"
-                                onClick={(e) => e.stopPropagation()}
+                              <ModernButton
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(project.githubUrl, "_blank");
+                                }}
+                                className="flex-1 py-2.5 px-4"
                               >
-                                <Github className="w-4 h-4 mr-2" />
-                                <span>GitHub</span>
-                              </a>
+                                GitHub
+                              </ModernButton>
                             )}
                           </div>
 
@@ -265,19 +265,17 @@ export default function ProjectsPage() {
 
             {/* Back to home */}
             <motion.div
-              className="mt-20 text-center"
+              className="mt-24 text-center pb-12"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <Link
-                href="/"
-                className="btn-secondary inline-flex items-center gap-2"
-                data-magnetic
+              <ModernButton
+                onClick={() => navigateWithTransition("/", "glass")}
+                className="inline-flex items-center gap-2"
               >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Back to Home</span>
-              </Link>
+                Back to Home
+              </ModernButton>
             </motion.div>
           </div>
         </section>

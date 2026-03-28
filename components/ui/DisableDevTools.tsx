@@ -4,21 +4,24 @@ import { useEffect } from "react";
 
 export function DisableDevTools() {
   useEffect(() => {
-    // Disable right-click context menu
+    const isDev =
+      process.env.NODE_ENV === "development" ||
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    if (isDev) return;
+
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
       return false;
     };
 
-    // Disable keyboard shortcuts for DevTools
     const handleKeyDown = (e: KeyboardEvent) => {
-      // F12
       if (e.key === "F12") {
         e.preventDefault();
         return false;
       }
 
-      // Ctrl+Shift+I (DevTools)
       if (e.ctrlKey && e.shiftKey && e.key === "I") {
         e.preventDefault();
         return false;

@@ -201,6 +201,30 @@ const defaultData: PortfolioData = {
   experiences: [
     {
       id: "1",
+      title: "MERN Stack Developer Intern",
+      company: "Budventure Technologies",
+      location: "On-Site, Ahmedabad",
+      period: "Present",
+      description:
+        "Currently working as a MERN Stack Developer Intern, building scalable web applications with modern technologies and real-time features.",
+      highlights: [
+        "Developing full-stack applications using Next.js, Node.js, and PostgreSQL with focus on performance and scalability",
+        "Implemented real-time features using WebSockets for live updates and seamless user interaction",
+        "Worked on API development, database design, and optimized backend services for better efficiency",
+        "Collaborated on production-level projects following industry best practices and clean architecture",
+      ],
+      technologies: [
+        "Next.js",
+        "React",
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "WebSockets",
+        "JavaScript",
+      ],
+    },
+    {
+      id: "2",
       title: "AI Internship",
       company: "All India Council for Technical Education (AICTE)",
       location: "Remote, New Delhi",
@@ -220,7 +244,7 @@ const defaultData: PortfolioData = {
       ],
     },
     {
-      id: "2",
+      id: "3",
       title: "Teaching Staff",
       company: "BECIL Training Centre",
       location: "On-Site, Ahmedabad",
@@ -471,6 +495,6 @@ export const usePortfolioStore = create<PortfolioState>()(
     {
       name: "portfolio-storage",
       version: 1,
-    }
-  )
+    },
+  ),
 );

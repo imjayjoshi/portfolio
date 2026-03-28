@@ -81,7 +81,7 @@ export const SkillsSection = () => {
       <div className="container-main relative">
         {/* Header with reveal animation */}
         <motion.div
-          className="text-center mb-10 sm:mb-12 md:mb-16"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
@@ -177,7 +177,7 @@ export const SkillsSection = () => {
 
         {/* View all skills link */}
         <motion.div
-          className="text-center mt-12"
+          className="text-center mt-8"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.6 }}

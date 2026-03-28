@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { usePageTransition } from "@/components/transitions";
 import { usePortfolioStore } from "@/store/portfolioStore";
+import { ModernButton } from "@/components/ui/ModernButton";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -21,7 +22,6 @@ const navLinks = [
   { href: "/projects", label: "Projects" },
   { href: "/skills", label: "Skills" },
   { href: "/certifications", label: "Certifications" },
-  { href: "/contact", label: "Contact" },
 ];
 
 // Magnetic hover effect hook
@@ -91,7 +91,7 @@ const NavLink = ({
         {characters.map((char, i) => (
           <motion.span
             key={i}
-            className={`inline-block text-sm font-medium ${
+            className={`inline-block text-base font-bold ${
               isActive ? "text-accent" : "text-muted-foreground"
             }`}
             animate={{
@@ -114,7 +114,7 @@ const NavLink = ({
         {characters.map((char, i) => (
           <motion.span
             key={i}
-            className="inline-block text-sm font-medium text-accent"
+            className="inline-block text-base font-bold text-accent"
             initial={{ y: 20, opacity: 0 }}
             animate={{
               y: isHovered ? 0 : 20,
@@ -237,33 +237,35 @@ export const Navbar = () => {
           )}
         </AnimatePresence>
 
-        <nav className="container-main flex items-center justify-between px-6">
-          {/* Logo */}
-          <Link
-            ref={logoRef}
-            href="/"
-            onClick={handleLogoClick}
-            className="font-display font-bold text-2xl tracking-tight relative z-10"
-            aria-label={`${data.name} logo`}
-            onMouseEnter={handleLogoHover}
-            onMouseLeave={handleLogoLeave}
-          >
-            <motion.span
-              className="relative inline-block"
-              whileHover={{ rotate: [0, -5, 5, 0] }}
-              transition={{ duration: 0.5 }}
+        <nav className="container-main flex items-center px-6">
+          {/* Left: Logo */}
+          <div className="flex-1 flex justify-start">
+            <Link
+              ref={logoRef}
+              href="/"
+              onClick={handleLogoClick}
+              className="font-display font-bold text-3xl tracking-tight relative z-10"
+              aria-label={`${data.name} logo`}
+              onMouseEnter={handleLogoHover}
+              onMouseLeave={handleLogoLeave}
             >
-              <span
-                className="gradient-text"
-                style={{ fontFamily: "'Raleway', sans-serif" }}
+              <motion.span
+                className="relative inline-block"
+                whileHover={{ rotate: [0, -5, 5, 0] }}
+                transition={{ duration: 0.5 }}
               >
-                {initials}
-              </span>
-            </motion.span>
-          </Link>
+                <span
+                  className="gradient-text"
+                  style={{ fontFamily: "'Raleway', sans-serif" }}
+                >
+                  {initials}
+                </span>
+              </motion.span>
+            </Link>
+          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Center: Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link, index) => (
               <motion.div
                 key={link.href}
@@ -276,41 +278,58 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button - Awwwards Style */}
-          <motion.button
-            className="md:hidden relative z-[10001] flex flex-col items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            <div className="w-6 h-4 relative">
-              <motion.span
-                className="absolute left-0 w-full h-0.5 bg-foreground"
-                animate={{
-                  top: isMobileMenuOpen ? "50%" : "0%",
-                  rotate: isMobileMenuOpen ? 45 : 0,
-                  translateY: isMobileMenuOpen ? -1 : 0,
-                }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              />
-              <motion.span
-                className="absolute left-0 top-1/2 w-full h-0.5 bg-foreground -translate-y-1/2"
-                animate={{
-                  opacity: isMobileMenuOpen ? 0 : 1,
-                  scaleX: isMobileMenuOpen ? 0 : 1,
-                }}
-                transition={{ duration: 0.3 }}
-              />
-              <motion.span
-                className="absolute left-0 w-full h-0.5 bg-foreground"
-                animate={{
-                  bottom: isMobileMenuOpen ? "50%" : "0%",
-                  rotate: isMobileMenuOpen ? -45 : 0,
-                  translateY: isMobileMenuOpen ? 1 : 0,
-                }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              />
-            </div>
-          </motion.button>
+          {/* Right: Action Button & Mobile Toggle */}
+          <div className="flex-1 flex justify-end items-center gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1, duration: 0.5 }}
+              className="hidden md:block"
+            >
+              <ModernButton
+                onClick={() => navigateWithTransition("/contact", "glass")}
+                className="px-5 py-2"
+              >
+                Hire Me
+              </ModernButton>
+            </motion.div>
+
+            {/* Mobile Menu Button - Awwwards Style */}
+            <motion.button
+              className="md:hidden relative z-[10001] flex flex-col items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              <div className="w-6 h-4 relative">
+                <motion.span
+                  className="absolute left-0 w-full h-0.5 bg-foreground"
+                  animate={{
+                    top: isMobileMenuOpen ? "50%" : "0%",
+                    rotate: isMobileMenuOpen ? 45 : 0,
+                    translateY: isMobileMenuOpen ? -1 : 0,
+                  }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                />
+                <motion.span
+                  className="absolute left-0 top-1/2 w-full h-0.5 bg-foreground -translate-y-1/2"
+                  animate={{
+                    opacity: isMobileMenuOpen ? 0 : 1,
+                    scaleX: isMobileMenuOpen ? 0 : 1,
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.span
+                  className="absolute left-0 w-full h-0.5 bg-foreground"
+                  animate={{
+                    bottom: isMobileMenuOpen ? "50%" : "0%",
+                    rotate: isMobileMenuOpen ? -45 : 0,
+                    translateY: isMobileMenuOpen ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </div>
+            </motion.button>
+          </div>
         </nav>
       </motion.header>
 
