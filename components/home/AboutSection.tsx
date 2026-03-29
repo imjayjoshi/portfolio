@@ -119,7 +119,7 @@ export const AboutSection = () => {
               >
                 Full Stack Developer
               </motion.span>{" "}
-              who enjoys building complete products — from clean UI to scalable
+              who enjoys building complete products from clean UI to scalable
               backend systems.
             </motion.p>
 
@@ -134,7 +134,7 @@ export const AboutSection = () => {
           </motion.div>
 
           {/* Scroll indicator */}
-          <motion.div
+          {/* <motion.div
             className="mt-12"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
@@ -151,7 +151,7 @@ export const AboutSection = () => {
             >
               <motion.div className="w-1 h-2 bg-accent rounded-full mt-2" />
             </motion.div>
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
     </section>

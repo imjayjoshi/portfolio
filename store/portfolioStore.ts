@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 export interface Experience {
   id: string;
@@ -54,7 +53,7 @@ export interface HighlightItem {
 export interface AboutPageContent {
   headline: string;
   headlineHighlight: string;
-  subheadline: string;
+  // subheadline: string;
   paragraphs: string[];
   highlights: HighlightItem[];
   coreSkills: string[];
@@ -119,7 +118,7 @@ const defaultData: PortfolioData = {
   title: "Full Stack Developer",
   roles: ["Full Stack Developer", "MERN Stack Developer", "AI Enthusiast"],
   summary:
-    "I build scalable, user-focused web applications using MERN and modern AI tools.",
+    "I’m a full stack developer focused on building scalable, user-centric web applications using the MERN stack and modern AI-driven tools.",
   email: "jayjoshi2784@gmail.com",
   phone: "8238061585",
   location: "Ahmedabad, India",
@@ -204,7 +203,7 @@ const defaultData: PortfolioData = {
       title: "MERN Stack Developer Intern",
       company: "Budventure Technologies",
       location: "On-Site, Ahmedabad",
-      period: "Present",
+      period: "January 2026 – Present",
       description:
         "Currently working as a MERN Stack Developer Intern, building scalable web applications with modern technologies and real-time features.",
       highlights: [
@@ -380,13 +379,12 @@ const defaultData: PortfolioData = {
   ],
   // About page content
   aboutPage: {
-    headline: "Fresh Perspective,",
-    headlineHighlight: "Bold Ambition",
-    subheadline:
-      "A passionate developer ready to make an impact in the tech industry.",
+    headline: "Turning Ideas Into",
+    headlineHighlight: "Scalable Products",
     paragraphs: [
-      "As a recent graduate stepping into the professional world, I bring fresh perspectives, cutting-edge knowledge, and an unwavering commitment to growth. My academic journey and personal projects have equipped me with a solid foundation in software development.",
-      "I'm passionate about staying at the forefront of technology, currently focusing on AI integrations and modern frontend frameworks. I thrive on challenges and am eager to contribute to innovative projects that push boundaries.",
+      "Currently, I’m gaining **hands-on industry experience** as an **intern**, where I contribute to real-world projects, write **production-level code**, and collaborate in a professional development environment. Alongside this, I also work directly with clients, delivering complete **end-to-end solutions** from development to deployment, including hosting setup on platforms like **Hostinger**.",
+      "My journey is built on a strong **academic foundation**, strengthened by practical experience and real projects. I specialize in **performance-driven applications**, **AI integrations**, and designing **clean, scalable systems** that are built to last.",
+      "I’m passionate about modern technologies, **product thinking**, and creating solutions that make a real impact. I continuously push myself to grow by exploring new tools, improving my **architecture skills**, and taking on challenges that elevate my development expertise.",
     ],
     highlights: [
       {
@@ -478,23 +476,15 @@ const defaultData: PortfolioData = {
   },
 };
 
-export const usePortfolioStore = create<PortfolioState>()(
-  persist(
-    (set) => ({
-      data: defaultData,
-      certificationBgEnabled: true,
-      backgroundVariant: "minimal",
-      setData: (newData) =>
-        set((state) => ({
-          data: { ...state.data, ...newData },
-        })),
-      setCertificationBg: (enabled) => set({ certificationBgEnabled: enabled }),
-      setBackgroundVariant: (variant) => set({ backgroundVariant: variant }),
-      resetToDefault: () => set({ data: defaultData }),
-    }),
-    {
-      name: "portfolio-storage",
-      version: 1,
-    },
-  ),
-);
+export const usePortfolioStore = create<PortfolioState>()((set) => ({
+  data: defaultData,
+  certificationBgEnabled: true,
+  backgroundVariant: "minimal",
+  setData: (newData) =>
+    set((state) => ({
+      data: { ...state.data, ...newData },
+    })),
+  setCertificationBg: (enabled) => set({ certificationBgEnabled: enabled }),
+  setBackgroundVariant: (variant) => set({ backgroundVariant: variant }),
+  resetToDefault: () => set({ data: defaultData }),
+}));

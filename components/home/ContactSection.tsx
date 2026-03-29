@@ -52,7 +52,7 @@ export const ContactSection = () => {
     <section ref={ref} className="section-padding relative" id="contact">
       {/* Background glow */}
       <motion.div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-accent/5 rounded-full blur-[120px] pointer-events-none"
+        className=""
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 1.5 }}
@@ -209,7 +209,7 @@ export const ContactSection = () => {
 
           {/* CTA Button */}
           <motion.div
-            className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border/50 text-center"
+            className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border/50 flex justify-center"
             variants={itemVariants}
           >
             <ModernButton
