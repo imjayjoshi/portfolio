@@ -4,6 +4,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Layout, Server, Database, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ModernButton } from "@/components/ui/ModernButton";
+import { usePageTransition } from "@/components/transitions";
 
 const skillGroups = [
   {
@@ -63,6 +65,7 @@ const cardVariants = {
 export const SkillsSection = () => {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { navigateWithTransition } = usePageTransition();
 
   return (
     <section
@@ -177,23 +180,17 @@ export const SkillsSection = () => {
 
         {/* View all skills link */}
         <motion.div
-          className="text-center mt-8"
+          className="flex justify-center mt-8"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          <Link
-            href="/skills"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-accent/30 text-accent hover:bg-accent/10 transition-all group"
+          <ModernButton
+            onClick={() => navigateWithTransition("/skills", "glass")}
+            showArrow
           >
-            <span>View all skills</span>
-            <motion.span
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <ArrowRight className="w-4 h-4" />
-            </motion.span>
-          </Link>
+            View all skills
+          </ModernButton>
         </motion.div>
       </div>
     </section>

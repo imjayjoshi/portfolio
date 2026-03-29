@@ -151,6 +151,9 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    display: inline-block;
+    padding-bottom: 0.05em;
+    margin-bottom: -0.05em;
   }
 
   /* Unified Modern Button Base Style - Matching User Reference (Smoothed) */
@@ -170,7 +173,9 @@
   .btn-accent:hover {
     border-color: hsla(210, 100%, 60%, 0.6);
     background: hsla(210, 100%, 50%, 0.1);
-    box-shadow: 0 0 30px hsla(210, 100%, 50%, 0.15), 0 0 0 1px inset hsla(210, 100%, 50%, 0.1);
+    box-shadow:
+      0 0 30px hsla(210, 100%, 50%, 0.15),
+      0 0 0 1px inset hsla(210, 100%, 50%, 0.1);
     transform: translateY(-1px);
     color: hsla(210, 100%, 75%, 1);
   }
@@ -227,7 +232,8 @@
   .reveal {
     opacity: 0;
     transform: translateY(50px);
-    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transition:
+      opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
       transform 1s cubic-bezier(0.16, 1, 0.3, 1);
   }
 

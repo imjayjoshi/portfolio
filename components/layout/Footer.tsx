@@ -14,7 +14,7 @@ export const Footer = () => {
   ];
 
   return (
-    <footer className="w-full py-8 border-t border-border/10 bg-black/20 backdrop-blur-md">
+    <footer className="w-full py-8 border-t border-border/10 relative z-10">
       <div className="container-main flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 px-6">
         {/* Left: Credits */}
         <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">

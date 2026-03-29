@@ -147,7 +147,7 @@ export default function ContactPage() {
                   className="flex items-center gap-2 text-accent mb-4 font-medium tracking-[0.2em] uppercase text-xs sm:text-sm"
                 >
                   <MessageCircle size={16} />
-                  <span>Get in touch</span>
+                  <span>HIRE ME</span>
                 </motion.div>
 
                 <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter mb-6 overflow-hidden flex flex-wrap gap-x-4">

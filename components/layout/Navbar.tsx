@@ -14,6 +14,7 @@ import gsap from "gsap";
 import { usePageTransition } from "@/components/transitions";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { ModernButton } from "@/components/ui/ModernButton";
+import { Magnetic } from "@/components/ui/Magnetic";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -74,76 +75,51 @@ const NavLink = ({
     navigateWithTransition(href, transitionType);
   };
 
-  // Split label into characters
-  const characters = label.split("");
-
   return (
     <Link
       href={href}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="nav-link-awwwards group relative px-4 py-2 block overflow-hidden"
+      className="group relative px-4 py-2 block overflow-hidden"
       aria-current={isActive ? "page" : undefined}
     >
       {/* Original text - slides up on hover */}
-      <span className="relative z-10 flex overflow-hidden">
-        {characters.map((char, i) => (
-          <motion.span
-            key={i}
-            className={`inline-block text-base font-bold ${
-              isActive ? "text-accent" : "text-muted-foreground"
-            }`}
-            animate={{
-              y: isHovered ? -20 : 0,
-              opacity: isHovered ? 0 : 1,
-            }}
-            transition={{
-              duration: 0.3,
-              delay: i * 0.02,
-              ease: [0.4, 0, 0.2, 1],
-            }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        ))}
+      <span className="relative z-10 block overflow-hidden h-[24px]">
+        <motion.span
+          className={`inline-block text-base font-bold whitespace-nowrap ${
+            isActive ? "text-accent" : "text-muted-foreground group-hover:text-accent font-medium transition-colors duration-500"
+          }`}
+          animate={{
+            y: isHovered ? -30 : 0,
+            opacity: isHovered ? 0 : 1,
+          }}
+          transition={{
+            duration: 1.0,
+            ease: [0.22, 1, 0.36, 1], // Custom slow bezier
+          }}
+        >
+          {label}
+        </motion.span>
       </span>
 
       {/* Clone text - slides in from below on hover */}
-      <span className="absolute top-2 left-4 z-10 flex overflow-hidden">
-        {characters.map((char, i) => (
-          <motion.span
-            key={i}
-            className="inline-block text-base font-bold text-accent"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{
-              y: isHovered ? 0 : 20,
-              opacity: isHovered ? 1 : 0,
-            }}
-            transition={{
-              duration: 0.3,
-              delay: i * 0.02,
-              ease: [0.4, 0, 0.2, 1],
-            }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        ))}
+      <span className="absolute inset-0 z-10 flex items-center px-4 overflow-hidden pointer-events-none">
+        <motion.span
+          className="inline-block text-base font-bold text-accent whitespace-nowrap"
+          initial={{ y: 30, opacity: 0 }}
+          animate={{
+            y: isHovered ? 0 : 30,
+            opacity: isHovered ? 1 : 0,
+          }}
+          transition={{
+            duration: 1.0,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          {label}
+        </motion.span>
       </span>
-
-      {/* Gradient sweep line */}
-      <motion.span
-        className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-accent via-blue-400 to-accent"
-        initial={{ scaleX: 0, originX: 0 }}
-        animate={{
-          scaleX: isHovered || isActive ? 1 : 0,
-        }}
-        transition={{
-          duration: 0.4,
-          ease: [0.4, 0, 0.2, 1],
-        }}
-        style={{ width: "100%" }}
-      />
 
       {/* Glow effect on hover */}
       <motion.span
@@ -153,7 +129,7 @@ const NavLink = ({
             ? "0 0 20px hsl(var(--accent) / 0.15), inset 0 0 20px hsl(var(--accent) / 0.05)"
             : "0 0 0px transparent",
         }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.6 }}
       />
     </Link>
   );
@@ -289,6 +265,7 @@ export const Navbar = () => {
               <ModernButton
                 onClick={() => navigateWithTransition("/contact", "glass")}
                 className="px-5 py-2"
+                bold
               >
                 Hire Me
               </ModernButton>

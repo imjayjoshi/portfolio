@@ -34,7 +34,7 @@ export const HeroSection = () => {
   }, []);
 
   const nameChars = data.name.split("").map((char, index) => (
-    <span key={index} className="char inline-block" style={{ opacity: 0 }}>
+    <span key={index} className="char inline-block py-1" style={{ opacity: 0 }}>
       {char === " " ? "\u00A0" : char}
     </span>
   ));
@@ -55,21 +55,16 @@ export const HeroSection = () => {
       ref={containerRef}
       className="min-h-[70vh] md:min-h-[85vh] flex items-center justify-center relative overflow-hidden"
     >
-      {/* Background Glow */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[800px] sm:h-[600px] bg-accent/5 rounded-full blur-[80px] sm:blur-[120px]" />
-      </div>
-
       {/* Content overlay */}
       <div className="container-main relative z-10 text-center px-4 sm:px-6 pt-20 sm:pt-24 md:pt-0">
         {/* Identity line */}
         <motion.p
-          className="text-base sm:text-lg text-muted-foreground"
+          className="text-base sm:text-lg text-accent font-mono tracking-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Hi, I'm
+          Hey, I'm
         </motion.p>
 
         {/* Name */}
@@ -137,12 +132,12 @@ export const HeroSection = () => {
             Resume
           </ModernButton>
 
-          <ModernButton
+          {/* <ModernButton
             onClick={handleScrollToContact}
             className="w-full sm:w-auto min-w-[180px]"
           >
             Contact Me
-          </ModernButton>
+          </ModernButton> */}
         </motion.div>
       </div>
 

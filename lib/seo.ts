@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-// Default SEO configuration (used at build time)
 const defaultSeo = {
   name: "Jay Joshi",
-  title: "Jay Joshi - Full Stack Developer | Portfolio",
+  title: "Full Stack Developer | Portfolio",
   siteUrl: "https://jay-joshi.vercel.app",
   twitterHandle: "@jayjoshi278",
   defaultOgImage: "/og-image.png",

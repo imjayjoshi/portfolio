@@ -26,7 +26,7 @@ export function ScrollBackground() {
         75,
         window.innerWidth / window.innerHeight,
         0.1,
-        1000
+        1000,
       );
       camera.position.z = 50;
 
@@ -68,7 +68,7 @@ export function ScrollBackground() {
       const geometry = new THREE.BufferGeometry();
       geometry.setAttribute(
         "position",
-        new THREE.BufferAttribute(positions, 3)
+        new THREE.BufferAttribute(positions, 3),
       );
       geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
@@ -160,7 +160,7 @@ export function ScrollBackground() {
       ref={containerRef}
       className="fixed inset-0 z-[-1] pointer-events-none" // Moved to z-[-1]
       style={{
-        background: "linear-gradient(135deg, #0a0b0f 0%, #1a1b2e 100%)",
+        background: "#0a0b0f",
       }}
     />
   );

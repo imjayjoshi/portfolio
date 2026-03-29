@@ -86,14 +86,14 @@ export const ProjectsSection = () => {
           </motion.div>
 
           <motion.h2
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight py-2"
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             This{" "}
             <motion.span
-              className="gradient-text inline-block"
+              className="gradient-text inline-block py-2"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.5 }}
@@ -220,7 +220,7 @@ export const ProjectsSection = () => {
 
         {/* View all projects */}
         <motion.div
-          className="text-center mt-12"
+          className="flex justify-center mt-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 1 }}
