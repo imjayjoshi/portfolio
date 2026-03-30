@@ -116,7 +116,7 @@ const defaultData: PortfolioData = {
   // ... existing data ...
   name: "Jay Joshi",
   title: "Full Stack Developer",
-  roles: ["Full Stack Developer", "MERN Stack Developer", "AI Enthusiast"],
+  roles: ["Full Stack Developer", "MERN", "AI"],
   summary:
     "I’m a full stack developer focused on building scalable, user-centric web applications using the MERN stack and modern AI-driven tools.",
   email: "jayjoshi2784@gmail.com",

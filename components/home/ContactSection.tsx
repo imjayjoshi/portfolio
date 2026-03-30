@@ -49,7 +49,7 @@ export const ContactSection = () => {
   ];
 
   return (
-    <section ref={ref} className="section-padding relative" id="contact">
+    <section ref={ref} className="pt-16 md:pt-20 lg:pt-24 pb-0 px-6 relative" id="contact">
       {/* Background glow */}
       <motion.div
         className=""
