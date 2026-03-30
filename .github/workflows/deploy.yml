@@ -1,9 +1,9 @@
 name: Deploy to Vercel
 
+# Disabled: Vercel native integration blocks contributor commits.
+# Re-enable by changing 'workflow_dispatch' back to 'push' once permissions are resolved.
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -41,11 +41,8 @@ jobs:
           OUTPUT=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --scope jayxjs 2>&1)
           EXIT_CODE=$?
           echo "$OUTPUT"
-          # Extract the deployment URL
           URL=$(echo "$OUTPUT" | grep -o 'https://[^ ]*\.vercel\.app' | tail -1)
           echo "deploy_url=$URL" >> $GITHUB_OUTPUT
-          # The CLI often crashes during status polling even though the deployment succeeds.
-          # Check if a URL was produced (deployment was created) regardless of exit code.
           if [ -n "$URL" ]; then
             echo "✅ Deployment created: $URL"
             exit 0
