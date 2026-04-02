@@ -2,8 +2,6 @@
 
 A immersive digital experience showcasing my journey as a Full Stack Developer. Built with a focus on high-performance 3D graphics, elegant animations, and robust software architecture using **Next.js**, **React**, and **Three.js**.
 
-![Portfolio Preview](public/og-image.png)
-
 ---
 
 ## 💎 Signature Features
