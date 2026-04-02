@@ -4,16 +4,23 @@ import { siteMetadata } from "@/lib/seo";
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
-    "/about",
-    "/projects",
-    "/skills",
-    "/experience",
-    "/certifications",
-    "/contact",
+    "about",
+    "projects",
+    "skills",
+    "experience",
+    "certifications",
+    "contact",
   ].map((route) => ({
-    url: `${siteMetadata.siteUrl}${route}`,
-    lastModified: new Date().toISOString().split("T")[0],
-    changeFrequency: (route === "" ? "weekly" : "monthly") as any,
+    url: `${siteMetadata.siteUrl}${route ? `/${route}` : "/"}`,
+    lastModified: new Date(),
+    changeFrequency: (route === "" ? "weekly" : "monthly") as
+      | "always"
+      | "hourly"
+      | "daily"
+      | "weekly"
+      | "monthly"
+      | "yearly"
+      | "never",
     priority: route === "" ? 1.0 : 0.8,
   }));
 

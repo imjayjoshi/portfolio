@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const defaultSeo = {
   name: "Jay Joshi",
   title: "Jay Joshi | Full Stack Web Developer (MERN & AI)",
-  siteUrl: "https://jay-joshi.vercel.app",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://jay-joshi.vercel.app",
   twitterHandle: "@jayjoshi278",
   defaultOgImage: "/og-image.png",
   keywords: [
