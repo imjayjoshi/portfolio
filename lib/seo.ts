@@ -2,18 +2,21 @@ import type { Metadata } from "next";
 
 const defaultSeo = {
   name: "Jay Joshi",
-  title: "Full Stack Developer | Portfolio",
+  title: "Jay Joshi | Full Stack Web Developer (MERN & AI)",
   siteUrl: "https://jay-joshi.vercel.app",
   twitterHandle: "@jayjoshi278",
   defaultOgImage: "/og-image.png",
   keywords: [
     "Jay Joshi",
-    "Jay Joshi Portfolio",
+    "Jay Joshi Full Stack Developer",
+    "Jay Joshi MERN Developer Portfolio",
     "Full Stack Developer India",
+    "MERN Stack Developer India",
+    "React Node.js Projects Portfolio",
+    "Hire Full Stack Developer India",
     "Jay Joshi Vercel Portfolio",
     "React Developer",
     "Next.js Developer",
-    "TypeScript expert",
     "MERN Stack Developer",
     "AI Engineer",
     "Software Portfolio",
@@ -37,32 +40,32 @@ interface PageSeo {
 
 const pageSeo: Record<PageKey, PageSeo> = {
   home: {
-    title: `${defaultSeo.name} | ${defaultSeo.title}`,
-    description: `Full Stack Developer specializing in MERN stack and AI technologies. Building scalable, high-performance web applications.`,
+    title: `Full Stack Developer Portfolio | ${defaultSeo.name}`,
+    description: `Jay Joshi - Full Stack Developer specializing in MERN stack and AI solutions. Explore my projects and expertise in building scalable web applications.`,
   },
   about: {
-    title: `About | ${defaultSeo.name}`,
-    description: `Learn about ${defaultSeo.name} - a passionate Full Stack Developer with expertise in React, Node.js, and modern web technologies.`,
+    title: `MERN Stack Developer India | ${defaultSeo.name}`,
+    description: `Learn about Jay Joshi, a MERN Stack Developer based in India. Expertise in React, Node.js, and building high-performance digital products.`,
   },
   projects: {
-    title: `Projects | ${defaultSeo.name}`,
-    description: `Explore my portfolio of web applications built with React, Node.js, TypeScript, and AI technologies.`,
+    title: `React Node.js Projects Portfolio | ${defaultSeo.name}`,
+    description: `Explore Jay Joshi's portfolio of MERN stack projects, including AI-powered applications, social platforms, and management systems.`,
   },
   skills: {
-    title: `Skills | ${defaultSeo.name}`,
-    description: `Technical skills and expertise in JavaScript, TypeScript, React, Node.js, MongoDB, and more.`,
+    title: `Technical Skills | ${defaultSeo.name}`,
+    description: `Expertise in React, Node.js, MongoDB, TypeScript, and AI technologies. Detailed breakdown of Jay Joshi's technical stack.`,
   },
   experience: {
-    title: `Experience | ${defaultSeo.name}`,
-    description: `Professional experience and educational background in software development and AI.`,
+    title: `Professional Experience | ${defaultSeo.name}`,
+    description: `Jay Joshi's journey as a MERN Stack Developer, including internships at Budventure Technologies and AICTE.`,
   },
   certifications: {
-    title: `Certifications | ${defaultSeo.name}`,
-    description: `Professional certifications in AI, cloud computing, and software engineering.`,
+    title: `Professional Certifications | ${defaultSeo.name}`,
+    description: `Certifications in Generative AI, Software Engineering, and AWS Fundamentals earned by Jay Joshi.`,
   },
   contact: {
-    title: `Contact | ${defaultSeo.name}`,
-    description: `Get in touch for collaboration, job opportunities, or project inquiries.`,
+    title: `Hire Full Stack Developer India | ${defaultSeo.name}`,
+    description: `Get in touch with Jay Joshi for full-stack web development opportunities, collaborations, or project inquiries.`,
   },
 };
 

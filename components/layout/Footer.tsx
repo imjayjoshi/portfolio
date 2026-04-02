@@ -16,11 +16,11 @@ export const Footer = () => {
   return (
     <footer className="w-full pt-0 pb-8 border-t border-border/10 relative z-10 overflow-hidden">
       {/* Large Name Branding */}
-      <div className="w-full pb-8 select-none pointer-events-none px-0">
+      {/* <div className="w-full pb-8 select-none pointer-events-none px-0">
         <h2 className="text-[23vw] font-bold leading-none tracking-tighter text-outline text-center uppercase whitespace-nowrap opacity-50 transition-all duration-700 hover:opacity-100 cursor-default">
           {data.name}
         </h2>
-      </div>
+      </div> */}
 
       <div className="container-main flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 px-6">
         {/* Left: Credits */}

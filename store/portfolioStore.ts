@@ -110,7 +110,7 @@ interface PortfolioState {
   setCertificationBg: (enabled: boolean) => void;
   setBackgroundVariant: (variant: "minimal" | "default" | "enhanced") => void;
   resetToDefault: () => void;
-}
+} 
 
 const defaultData: PortfolioData = {
   // ... existing data ...
@@ -138,7 +138,7 @@ const defaultData: PortfolioData = {
         "Java",
         "ASP.NET",
         "C#",
-        "Python",
+        "Python", 
       ],
     },
     {
@@ -443,34 +443,34 @@ const defaultData: PortfolioData = {
           "Full Stack Developer specializing in MERN stack and AI technologies. Building scalable, high-performance web applications.",
       },
       about: {
-        title: "About | Jay Joshi",
+        title: "MERN Stack Developer India | Jay Joshi",
         description:
-          "Learn about Jay Joshi - a passionate Full Stack Developer with expertise in React, Node.js, and modern web technologies.",
+          "Learn about Jay Joshi, a MERN Stack Developer based in India. Expertise in React, Node.js, and building high-performance digital products.",
       },
       projects: {
-        title: "Projects | Jay Joshi",
+        title: "React Node.js Projects Portfolio | Jay Joshi",
         description:
-          "Explore my portfolio of web applications built with React, Node.js, TypeScript, and AI technologies.",
+          "Explore Jay Joshi's portfolio of MERN stack projects, including AI-powered applications, social platforms, and management systems.",
       },
       skills: {
-        title: "Skills | Jay Joshi",
+        title: "Technical Skills | Jay Joshi",
         description:
-          "Technical skills and expertise in JavaScript, TypeScript, React, Node.js, MongoDB, and more.",
+          "Expertise in React, Node.js, MongoDB, TypeScript, and AI technologies. Detailed breakdown of Jay Joshi's technical stack.",
       },
       experience: {
-        title: "Experience | Jay Joshi",
+        title: "Professional Experience | Jay Joshi",
         description:
-          "Professional experience and educational background in software development and AI.",
+          "Jay Joshi's journey as a MERN Stack Developer, including internships at Budventure Technologies and AICTE.",
       },
       certifications: {
-        title: "Certifications | Jay Joshi",
+        title: "Professional Certifications | Jay Joshi",
         description:
-          "Professional certifications in AI, cloud computing, and software engineering.",
+          "Certifications in Generative AI, Software Engineering, and AWS Fundamentals earned by Jay Joshi.",
       },
       contact: {
-        title: "Contact | Jay Joshi",
+        title: "Hire Full Stack Developer India | Jay Joshi",
         description:
-          "Get in touch for collaboration, job opportunities, or project inquiries.",
+          "Get in touch with Jay Joshi for full-stack web development opportunities, collaborations, or project inquiries.",
       },
     },
   },
