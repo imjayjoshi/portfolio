@@ -20,12 +20,11 @@ export default function HomePage() {
   return (
     <Layout showBackground={false}>
       <PageTransition>
-        {/* Storytelling Scroll Flow */}
-        <HeroSection /> {/* "This is who I am" */}
-        <AboutSection /> {/* "This is how I think" */}
-        <SkillsSection /> {/* "This is what I use" */}
-        <ProjectsSection /> {/* "This proves everything" */}
-        <ContactSection /> {/* "Let's work together" */}
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <ProjectsSection />
+        <ContactSection />
       </PageTransition>
     </Layout>
   );
