@@ -42,8 +42,8 @@ export default function RootLayout({
               url: "https://jay-joshi.vercel.app",
               jobTitle: "Full Stack Developer",
               sameAs: [
-                "https://github.com/imjayjoshi", // Assuming this from the context
-                "https://linkedin.com/in/jay-joshi2708", // Assuming this pattern
+                "https://github.com/imjayjoshi",
+                "https://linkedin.com/in/jay-joshi2708",
                 "https://twitter.com/jayjoshi278",
               ],
               description:
