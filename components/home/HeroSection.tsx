@@ -5,6 +5,8 @@ import { motion, useInView } from "framer-motion";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { ModernButton } from "@/components/ui/ModernButton";
 import { HeroGrid } from "./HeroGrid";
+// import { ScrollVelocityWrapper } from "@/hooks/useScrollVelocitySkew";
+import {MagneticLetters} from "@/components/ui/MagneticLetters";
 
 const containerVariants = {
   hidden: {},
@@ -66,17 +68,17 @@ export const HeroSection = () => {
   return (
     <section
       ref={containerRef}
-      className="min-h-[70vh] md:min-h-[90vh] flex items-center justify-center relative overflow-hidden bg-[#0B0C0F]"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
     >
       <HeroGrid />
-
+    {/* <ScrollVelocityWrapper intensity={0.4} maxSkew={6}> */}
       <motion.div
-        className="container-main relative z-10 text-center px-4 sm:px-6 pt-20 sm:pt-24 md:pt-0"
+        className="container-main relative z-10 text-center px-4 sm:px-6"
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        <div className="flex flex-col items-center mb-8 sm:mb-10">
+        <div className="flex flex-col items-center mb-4 sm:mb-6">
           <motion.p
             className="text-[11px] md:text-sm text-white/40 font-mono tracking-[0.3em] uppercase mb-1"
             variants={fadeUpVariant}
@@ -92,16 +94,24 @@ export const HeroSection = () => {
           </motion.div>
         </div>
 
-        <motion.h1
+        <MagneticLetters
+          text={`I Build Scalable\nDigital Products`}
+          as="h1"
+          strength={0.5}
+          radius={90}
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4 sm:mb-6 leading-[1.05] text-white"
+        />
+
+        {/* <motion.h1
           className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 sm:mb-8 leading-[1.05] text-white"
           style={{ fontFamily: "'Raleway', sans-serif" }}
           variants={fadeUpVariant}
         >
           I Build Scalable <br className="hidden md:block" /> Digital Products
-        </motion.h1>
+        </motion.h1> */}
 
         <motion.p
-          className="text-base sm:text-lg lg:text-xl text-white/50 max-w-2xl mx-auto mb-12 sm:mb-14 md:mb-16 leading-relaxed px-2 font-light"
+          className="text-base sm:text-lg lg:text-xl text-white/50 max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12 leading-relaxed px-2 font-light"
           variants={subtextVariant}
         >
           Focused on performance, AI integration, and real-world impact.
@@ -148,6 +158,7 @@ export const HeroSection = () => {
           <div className="w-[1px] h-12 bg-gradient-to-b from-accent/40 to-transparent" />
         </motion.div>
       </motion.div>
+      {/* </ScrollVelocityWrapper> */}
     </section>
   );
 };

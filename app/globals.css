@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -88,9 +88,9 @@
   h4,
   h5,
   h6 {
-    font-family: "Sora", system-ui, sans-serif;
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.04em;
     line-height: 1.1;
   }
 
@@ -137,7 +137,7 @@
 
   /* Section padding */
   .section-padding {
-    @apply py-16 md:py-20 lg:py-24 px-6;
+    @apply py-8 md:py-10 lg:py-12 px-6;
   }
 
   /* Container */

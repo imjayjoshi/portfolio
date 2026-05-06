@@ -6,26 +6,23 @@ import {
   useState,
   useCallback,
   useEffect,
+  useRef,
   ReactNode,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
-// Lazy load transition components
-const ParticleTransition = dynamic(
-  () =>
-    import("./ParticleTransition").then((mod) => ({
-      default: mod.ParticleTransition,
-    })),
+const FluidMembraneTransition = dynamic(
+  () => import("./FluidMembraneTransition").then((m) => ({ default: m.FluidMembraneTransition })),
   { ssr: false }
 );
 
-const GlassWipe = dynamic(
-  () => import("./GlassWipe").then((mod) => ({ default: mod.GlassWipe })),
+const ParticleDisintegration = dynamic(
+  () => import("./ParticleDisintegration").then((m) => ({ default: m.ParticleDisintegration })),
   { ssr: false }
 );
 
-type TransitionType = "particle" | "glass" | "none";
+type TransitionType = "fluid" | "particle" | "glass" | "none";
 
 interface TransitionContextType {
   navigateWithTransition: (href: string, type?: TransitionType) => void;
@@ -41,88 +38,69 @@ const TransitionContext = createContext<TransitionContextType>({
 
 export const usePageTransition = () => useContext(TransitionContext);
 
-interface TransitionProviderProps {
-  children: ReactNode;
-}
-
-export const TransitionProvider = ({ children }: TransitionProviderProps) => {
-  const router = useRouter();
+export const TransitionProvider = ({ children }: { children: ReactNode }) => {
+  const router   = useRouter();
   const pathname = usePathname();
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [transitionType, setTransitionType] = useState<TransitionType>("none");
-  const [showParticle, setShowParticle] = useState(false);
-  const [showGlass, setShowGlass] = useState(false);
+  const [transitionType,  setTransitionType]  = useState<TransitionType>("none");
+  const [showFluid,       setShowFluid]       = useState(false);
+  const [showParticle,    setShowParticle]    = useState(false);
+  const [clickOrigin,     setClickOrigin]     = useState({ x: 0.5, y: 0.5 });
+  const lastClick = useRef({ x: 0.5, y: 0.5 });
+
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      lastClick.current = { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight };
+    };
+    window.addEventListener("mousedown", onDown);
+    return () => window.removeEventListener("mousedown", onDown);
+  }, []);
 
   const navigateWithTransition = useCallback(
     (href: string, type?: TransitionType) => {
       if (isTransitioning || href === pathname) return;
-
-      const selectedType = type || "glass";
-
+      const selectedType = type ?? "fluid";
       setTransitionType(selectedType);
       setIsTransitioning(true);
+      setClickOrigin({ ...lastClick.current });
 
       if (selectedType === "particle") {
         setShowParticle(true);
-        // Navigate after particle animation starts (faster)
-        setTimeout(() => {
-          router.push(href);
-        }, 300);
-        // Hide particle after navigation
-        setTimeout(() => {
-          setShowParticle(false);
-          setIsTransitioning(false);
-          setTransitionType("none");
-        }, 600);
-      } else if (selectedType === "glass") {
-        setShowGlass(true);
-        // Navigate quickly with glass wipe
-        setTimeout(() => {
-          router.push(href);
-        }, 150);
-        // Hide glass after animation completes
-        setTimeout(() => {
-          setShowGlass(false);
-          setIsTransitioning(false);
-          setTransitionType("none");
-        }, 400);
+        setTimeout(() => router.push(href), 550);
+        setTimeout(() => { setShowParticle(false); setIsTransitioning(false); setTransitionType("none"); }, 1500);
+      } else if (selectedType === "fluid") {
+        setShowFluid(true);
+        setTimeout(() => router.push(href), 380);
+        setTimeout(() => { setShowFluid(false); setIsTransitioning(false); setTransitionType("none"); }, 950);
       } else {
-        // No transition - immediate navigation
         router.push(href);
-        setIsTransitioning(false);
-        setTransitionType("none");
+        setTimeout(() => { setIsTransitioning(false); setTransitionType("none"); }, 300);
       }
     },
     [isTransitioning, pathname, router]
   );
 
-  // Reset transition state if route changes unexpectedly
   useEffect(() => {
     return () => {
-      setIsTransitioning(false);
-      setTransitionType("none");
-      setShowParticle(false);
-      setShowGlass(false);
+      setIsTransitioning(false); setTransitionType("none");
+      setShowFluid(false); setShowParticle(false);
     };
   }, [pathname]);
 
   return (
-    <TransitionContext.Provider
-      value={{
-        navigateWithTransition,
-        isTransitioning,
-        transitionType,
-      }}
-    >
+    <TransitionContext.Provider value={{ navigateWithTransition, isTransitioning, transitionType }}>
       {children}
-
-      {/* Particle Transition */}
-      {showParticle && (
-        <ParticleTransition active={showParticle} direction="in" />
+      {showFluid && (
+        <FluidMembraneTransition active={showFluid} originX={clickOrigin.x} originY={clickOrigin.y} color="#0b0d10" />
       )}
-
-      {/* Glass Wipe Transition */}
-      {showGlass && <GlassWipe active={showGlass} direction="left" />}
+      {showParticle && (
+        <ParticleDisintegration
+          active={showParticle}
+          originX={clickOrigin.x}
+          originY={clickOrigin.y}
+          onComplete={() => { setShowParticle(false); setIsTransitioning(false); setTransitionType("none"); }}
+        />
+      )}
     </TransitionContext.Provider>
   );
 };

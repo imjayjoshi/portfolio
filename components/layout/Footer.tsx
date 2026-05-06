@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Heart, Github, Linkedin, Instagram } from "lucide-react";
+import { Heart, Github, Linkedin, Instagram, X } from "lucide-react";
 import { usePortfolioStore } from "@/store/portfolioStore";
 
 export const Footer = () => {
@@ -11,10 +11,11 @@ export const Footer = () => {
     { icon: Github, href: data.github, label: "GitHub" },
     { icon: Linkedin, href: data.linkedin, label: "LinkedIn" },
     { icon: Instagram, href: data.instagram, label: "Instagram" },
+    { icon: X, href: data.x, label: "X" },
   ];
 
   return (
-    <footer className="w-full pt-0 pb-8 border-t border-border/10 relative z-10 overflow-hidden">
+    <footer className="w-full pt-8 pb-8 border-t border-border/10 relative z-10 overflow-hidden">
       {/* Large Name Branding */}
       {/* <div className="w-full pb-8 select-none pointer-events-none px-0">
         <h2 className="text-[23vw] font-bold leading-none tracking-tighter text-outline text-center uppercase whitespace-nowrap opacity-50 transition-all duration-700 hover:opacity-100 cursor-default">
@@ -24,25 +25,12 @@ export const Footer = () => {
 
       <div className="container-main flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 px-6">
         {/* Left: Credits */}
-        <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
-          <span className="opacity-80">Created with</span>
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 1],
-              color: ["#94a3b8", "#ef4444", "#94a3b8"],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            <Heart size={14} fill="currentColor" />
-          </motion.div>
-          <span className="opacity-80">by</span>
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-medium">
+          <span className="opacity-80">© {new Date().getFullYear()}</span>
           <span className="text-foreground font-bold hover:text-blue-500 transition-colors cursor-default">
-            {data.name}
+            {data.name}.
           </span>
+          <span className="opacity-80">All Rights Reserved.</span>
         </div>
 
         {/* Right: Social Icons */}
@@ -53,12 +41,11 @@ export const Footer = () => {
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-blue-500 transition-all duration-300"
-              whileHover={{ y: -3 }}
+              className="text-xs sm:text-sm text-muted-foreground hover:text-blue-500 font-medium transition-all duration-300"
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
-              aria-label={social.label}
             >
-              <social.icon size={20} strokeWidth={1.5} />
+              {social.label}
             </motion.a>
           ))}
         </div>

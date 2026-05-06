@@ -18,7 +18,7 @@ export default function HomePage() {
   }, [setBackgroundVariant]);
 
   return (
-    <Layout showBackground={false}>
+    <Layout>
       <PageTransition>
         <HeroSection />
         <AboutSection />

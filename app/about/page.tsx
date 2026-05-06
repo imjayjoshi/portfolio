@@ -9,14 +9,22 @@ import { ScrollBackground } from "@/components/transitions/ScrollBackground";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { Code2, Lightbulb, Target, Rocket, LucideIcon } from "lucide-react";
+import dynamic from "next/dynamic";
 
-// Icon mapping for dynamic highlights
+
 const iconMap: Record<string, LucideIcon> = {
   Code2,
   Lightbulb,
   Target,
   Rocket,
 };
+
+const PointCloudAboutScene = dynamic(
+  () => import("@/components/three/PointCloudAboutScene").then(m => ({
+    default: m.PointCloudAboutScene
+  })),
+  { ssr: false }
+);
 
 export default function AboutPage() {
   const { data, setBackgroundVariant } = usePortfolioStore();

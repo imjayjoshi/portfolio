@@ -36,8 +36,6 @@ export const HeroGrid = memo(function HeroGrid() {
             linear-gradient(to bottom, rgba(255, 255, 255, 1) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: `radial-gradient(800px circle at ${x}px ${y}px, black, transparent 80%)`,
-          WebkitMaskImage: `radial-gradient(800px circle at ${x}px ${y}px, black, transparent 80%)`,
         }}
       />
 
@@ -46,8 +44,6 @@ export const HeroGrid = memo(function HeroGrid() {
         style={{
           backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.4) 1.5px, transparent 0)`,
           backgroundSize: "40px 40px",
-          maskImage: `radial-gradient(500px circle at ${x}px ${y}px, black, transparent 100%)`,
-          WebkitMaskImage: `radial-gradient(500px circle at ${x}px ${y}px, black, transparent 100%)`,
         }}
       />
 

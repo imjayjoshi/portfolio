@@ -91,6 +91,7 @@ export interface PortfolioData {
   linkedin: string;
   github: string;
   instagram: string;
+  x: string;
   contactFormAccessKey: string;
   experiences: Experience[];
   projects: Project[];
@@ -125,6 +126,7 @@ const defaultData: PortfolioData = {
   linkedin: "https://www.linkedin.com/in/jay-joshi2708/",
   github: "https://www.github.com/imjayjoshi",
   instagram: "https://www.instagram.com/jay._.joshi._",
+  x:"https://x.com/fixwithjay",
   contactFormAccessKey: "225ba732-ab8b-4556-b146-cec8b349078d",
   skillCategories: [
     {
@@ -371,7 +373,7 @@ const defaultData: PortfolioData = {
     },
     {
       id: "3",
-      degree: "HSC (12th)",
+      degree: "HSC",
       institution: "Muktajivan High School",
       period: "2021",
       grade: "61.33%",

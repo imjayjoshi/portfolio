@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { usePageTransition } from "@/components/transitions";
 import { ModernButton } from "@/components/ui/ModernButton";
+// import { ScrollVelocityWrapper } from "@/hooks/useScrollVelocitySkew";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -57,6 +58,7 @@ export const ProjectsSection = () => {
   const featuredProjects = isMounted ? data.projects.slice(0, 3) : [];
 
   return (
+      // <ScrollVelocityWrapper intensity={0.3} maxSkew={5}>
     <section ref={ref} className="section-padding px-4 sm:px-6" id="projects">
       <div className="container-main">
         {/* Section header with animations */}
@@ -234,5 +236,6 @@ export const ProjectsSection = () => {
         </motion.div>
       </div>
     </section>
+    // </ScrollVelocityWrapper>
   );
 };

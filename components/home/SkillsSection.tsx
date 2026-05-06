@@ -6,6 +6,7 @@ import { Layout, Server, Database, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ModernButton } from "@/components/ui/ModernButton";
 import { usePageTransition } from "@/components/transitions";
+// import { ScrollVelocityWrapper } from "@/hooks/useScrollVelocitySkew";
 
 const skillGroups = [
   {
@@ -68,6 +69,7 @@ export const SkillsSection = () => {
   const { navigateWithTransition } = usePageTransition();
 
   return (
+    // <ScrollVelocityWrapper intensity={0.3} maxSkew={5}>
     <section
       ref={ref}
       className="section-padding relative px-4 sm:px-6"
@@ -194,5 +196,6 @@ export const SkillsSection = () => {
         </motion.div>
       </div>
     </section>
+    // </ScrollVelocityWrapper>
   );
 };

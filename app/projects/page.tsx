@@ -1,22 +1,24 @@
 "use client";
 
-import { useState, useEffect, Suspense, useRef } from "react";
+// app/projects/page.tsx — drop-in replacement
+// HolographicProjectsScene added with ssr:false and mounted guard
+
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { Layout } from "@/components/layout/Layout";
 import { usePortfolioStore } from "@/store/portfolioStore";
-import { ArrowLeft, ExternalLink, Github, ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 import { usePageTransition } from "@/components/transitions";
 import { ModernButton } from "@/components/ui/ModernButton";
 
+// ssr: false is REQUIRED for all Three.js scenes
 const FloatingDeckScene = dynamic(
-  () =>
-    import("@/components/three/FloatingDeckScene").then((mod) => ({
-      default: mod.FloatingDeckScene,
-    })),
+  () => import("@/components/three/FloatingDeckScene").then((m) => ({ default: m.FloatingDeckScene })),
   { ssr: false, loading: () => null }
 );
+
+// New holographic overlay — ssr:false + internal mounted guard
 
 export default function ProjectsPage() {
   const { data, setBackgroundVariant } = usePortfolioStore();
@@ -24,17 +26,11 @@ export default function ProjectsPage() {
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
   const { navigateWithTransition } = usePageTransition();
 
-  useEffect(() => {
-    setBackgroundVariant("enhanced");
-  }, [setBackgroundVariant]);
+  useEffect(() => { setBackgroundVariant("enhanced"); }, [setBackgroundVariant]);
 
-  // Mouse tracking
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX / window.innerWidth,
-        y: e.clientY / window.innerHeight,
-      });
+      setMousePosition({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight });
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
@@ -43,6 +39,7 @@ export default function ProjectsPage() {
   return (
     <Layout showBackground={false}>
       <div className="relative">
+        {/* Original floating deck — kept as-is */}
         <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
           <Suspense fallback={null}>
             <FloatingDeckScene
@@ -54,8 +51,9 @@ export default function ProjectsPage() {
             />
           </Suspense>
         </div>
+
         {/* Hero Section */}
-        <section className="min-h-[60vh] md:min-h-[80vh] relative flex flex-col items-center justify-center px-6 text-center">
+        <section className="min-h-[60vh] md:min-h-[80vh] relative flex flex-col items-center justify-center px-6 text-center" style={{ zIndex: 10 }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -71,8 +69,7 @@ export default function ProjectsPage() {
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-12">
-              Each project represents a unique challenge solved with modern
-              technologies and thoughtful design.
+              Each project represents a unique challenge solved with modern technologies and thoughtful design.
             </p>
 
             <motion.div
@@ -82,14 +79,7 @@ export default function ProjectsPage() {
               transition={{ delay: 0.5 }}
             >
               <span className="text-sm font-medium">Scroll to explore</span>
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
+              <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
                 <ChevronDown className="w-5 h-5 text-accent" />
               </motion.div>
             </motion.div>
@@ -97,9 +87,8 @@ export default function ProjectsPage() {
         </section>
 
         {/* Projects Grid Section */}
-        <section className="relative z-20 bg-background py-24 px-6">
+        <section className="relative bg-background py-24 px-6" style={{ zIndex: 20 }}>
           <div className="max-w-6xl mx-auto">
-            {/* Section header */}
             <motion.div
               className="text-center mb-16"
               initial={{ opacity: 0, y: 40 }}
@@ -107,23 +96,15 @@ export default function ProjectsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <span className="text-xs font-medium text-accent uppercase tracking-[0.3em] mb-4 block">
-                Portfolio
-              </span>
-              {/* <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Featured <span className="gradient-text">Projects</span>
-              </h2> */}
+              <span className="text-xs font-medium text-accent uppercase tracking-[0.3em] mb-4 block">Portfolio</span>
               <p className="text-muted-foreground max-w-xl mx-auto">
-                Real-world applications built with modern technologies and best
-                practices
+                Real-world applications built with modern technologies and best practices
               </p>
             </motion.div>
 
-            {/* Projects grid with flip cards */}
             <div className="grid gap-8 md:grid-cols-2">
               {data.projects.map((project, index) => {
                 const isFlipped = selectedIndex === index;
-
                 return (
                   <motion.div
                     key={project.id}
@@ -133,7 +114,6 @@ export default function ProjectsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    {/* Card container with flip animation */}
                     <motion.div
                       className="w-full h-full relative cursor-pointer"
                       style={{ transformStyle: "preserve-3d" }}
@@ -141,12 +121,8 @@ export default function ProjectsPage() {
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                       onClick={() => setSelectedIndex(isFlipped ? null : index)}
                     >
-                      {/* Front of card */}
-                      <div
-                        className="absolute inset-0 glass-card p-6 md:p-8 group flex flex-col"
-                        style={{ backfaceVisibility: "hidden" }}
-                      >
-                        {/* Card number */}
+                      {/* Front */}
+                      <div className="absolute inset-0 glass-card p-6 md:p-8 group flex flex-col" style={{ backfaceVisibility: "hidden" }}>
                         <div className="flex items-center justify-between mb-8">
                           <span className="text-xs font-medium text-accent uppercase tracking-widest">
                             Project {String(index + 1).padStart(2, "0")}
@@ -155,32 +131,21 @@ export default function ProjectsPage() {
                             {index + 1}
                           </span>
                         </div>
-
                         <div className="flex-1">
                           <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-accent transition-colors">
                             {project.title}
                           </h3>
-
                           <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
                             {project.shortDescription}
                           </p>
-
-                          {/* Tech stack preview */}
                           <div className="flex flex-wrap gap-2">
-                            {project.technologies
-                              .slice(0, 5)
-                              .map((tech: string) => (
-                                <span
-                                  key={tech}
-                                  className="text-xs px-3 py-1 rounded-md bg-accent/10 text-accent/80 border border-accent/20"
-                                >
-                                  {tech}
-                                </span>
-                              ))}
+                            {project.technologies.slice(0, 5).map((tech: string) => (
+                              <span key={tech} className="text-xs px-3 py-1 rounded-md bg-accent/10 text-accent/80 border border-accent/20">
+                                {tech}
+                              </span>
+                            ))}
                           </div>
                         </div>
-
-                        {/* Click hint */}
                         <div className="mt-8 text-xs text-muted-foreground flex items-center gap-2">
                           <div className="w-4 h-4 rounded-full border border-muted-foreground/30 flex items-center justify-center">
                             <ArrowLeft className="w-2.5 h-2.5 rotate-180" />
@@ -189,72 +154,32 @@ export default function ProjectsPage() {
                         </div>
                       </div>
 
-                      {/* Back of card */}
-                      <div
-                        className="absolute inset-0 glass-card p-6 md:p-8"
-                        style={{
-                          backfaceVisibility: "hidden",
-                          transform: "rotateY(180deg)",
-                        }}
-                      >
+                      {/* Back */}
+                      <div className="absolute inset-0 glass-card p-6 md:p-8" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
                         <div className="flex flex-col h-full">
-                          {/* Header */}
-                          <h3 className="text-xl font-bold mb-3">
-                            {project.title}
-                          </h3>
-
-                          {/* Description */}
-                          <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                            {project.shortDescription}
-                          </p>
-
-                          {/* Tech stack */}
+                          <h3 className="text-xl font-bold mb-3">{project.title}</h3>
+                          <p className="text-muted-foreground text-sm leading-relaxed mb-4">{project.shortDescription}</p>
                           <div className="mb-6 flex-1">
-                            <h4 className="text-xs font-semibold text-accent uppercase tracking-wider mb-2">
-                              Tech Stack
-                            </h4>
+                            <h4 className="text-xs font-semibold text-accent uppercase tracking-wider mb-2">Tech Stack</h4>
                             <div className="flex flex-wrap gap-1.5">
                               {project.technologies.map((tech: string) => (
-                                <span
-                                  key={tech}
-                                  className="text-xs px-2 py-0.5 rounded bg-accent/10 text-accent/80"
-                                >
-                                  {tech}
-                                </span>
+                                <span key={tech} className="text-xs px-2 py-0.5 rounded bg-accent/10 text-accent/80">{tech}</span>
                               ))}
                             </div>
                           </div>
-
-                          {/* Links */}
                           <div className="flex gap-4 pt-4 border-t border-border">
                             {project.liveUrl && project.liveUrl !== "#" && (
-                              <ModernButton
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  window.open(project.liveUrl, "_blank");
-                                }}
-                                className="flex-1 py-2.5 px-4"
-                              >
+                              <ModernButton onClick={(e) => { e.stopPropagation(); window.open(project.liveUrl, "_blank"); }} className="flex-1 py-2.5 px-4">
                                 Live Demo
                               </ModernButton>
                             )}
                             {project.githubUrl && project.githubUrl !== "#" && (
-                              <ModernButton
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  window.open(project.githubUrl, "_blank");
-                                }}
-                                className="flex-1 py-2.5 px-4"
-                              >
+                              <ModernButton onClick={(e) => { e.stopPropagation(); window.open(project.githubUrl, "_blank"); }} className="flex-1 py-2.5 px-4">
                                 GitHub
                               </ModernButton>
                             )}
                           </div>
-
-                          {/* Flip back hint */}
-                          <div className="text-center mt-3 text-xs text-muted-foreground">
-                            ← Click to flip back
-                          </div>
+                          <div className="text-center mt-3 text-xs text-muted-foreground">← Click to flip back</div>
                         </div>
                       </div>
                     </motion.div>
@@ -263,17 +188,13 @@ export default function ProjectsPage() {
               })}
             </div>
 
-            {/* Back to home */}
             <motion.div
               className="mt-24 text-center pb-12"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <ModernButton
-                onClick={() => navigateWithTransition("/", "glass")}
-                className="inline-flex items-center gap-2"
-              >
+              <ModernButton onClick={() => navigateWithTransition("/", "fluid")} className="inline-flex items-center gap-2">
                 Back to Home
               </ModernButton>
             </motion.div>

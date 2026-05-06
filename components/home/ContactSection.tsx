@@ -49,7 +49,7 @@ export const ContactSection = () => {
   ];
 
   return (
-    <section ref={ref} className="pt-16 md:pt-20 lg:pt-24 pb-0 px-6 relative" id="contact">
+    <section ref={ref} className="pt-8 md:pt-10 lg:pt-12 pb-12 md:pb-16 lg:pb-20 px-6 relative" id="contact">
       {/* Background glow */}
       <motion.div
         className=""

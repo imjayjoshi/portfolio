@@ -8,7 +8,8 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { Briefcase, MapPin, Calendar } from "lucide-react";
 
-// Lazy load WebGL scene
+
+/*
 const ExperienceScene = dynamic(
   () =>
     import("@/components/three/ExperienceScene").then((mod) => ({
@@ -16,7 +17,15 @@ const ExperienceScene = dynamic(
     })),
   { ssr: false, loading: () => null }
 );
+*/
 
+const DNAHelixExperienceScene = dynamic(
+  () =>
+    import("@/components/three/DNAHelixExperienceScene").then((m) => ({
+      default: m.DNAHelixExperienceScene,
+    })),
+  { ssr: false }
+);
 export default function ExperiencePage() {
   const { data, setBackgroundVariant } = usePortfolioStore();
   const headerRef = useRef(null);
@@ -77,8 +86,16 @@ export default function ExperiencePage() {
         <div className="relative min-h-screen">
           {/* Background Scene */}
           <div className="fixed inset-0 z-0">
+            {/**
+             * Previous background scene kept for reference:
+             * <ExperienceScene />
+             */}
             <Suspense fallback={null}>
-              <ExperienceScene />
+              <DNAHelixExperienceScene
+                activeIndex={activeIndex}
+                totalExperiences={data.experiences.length}
+                scrollProgress={scrollYProgress.get()}
+              />
             </Suspense>
           </div>
 

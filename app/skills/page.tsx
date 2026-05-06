@@ -24,6 +24,13 @@ const SkillsOrbitScene = dynamic(
   { ssr: false, loading: () => null }
 );
 
+const NeuralNetworkSkillsScene = dynamic(
+  () => import("@/components/three/NeuralNetworkSkillsScene").then(m => ({
+    default: m.NeuralNetworkSkillsScene
+  })),
+  { ssr: false, loading: () => null }
+);
+
 // Skill category icons
 const categoryIcons: Record<string, LucideIcon> = {
   "Programming Languages": Code2,
@@ -49,7 +56,8 @@ export default function SkillsPage() {
         {/* Background Scene */}
         <div className="fixed inset-0 z-0">
           <Suspense fallback={null}>
-            <SkillsOrbitScene />
+            {/* <SkillsOrbitScene /> */}
+            <NeuralNetworkSkillsScene />
           </Suspense>
         </div>
 

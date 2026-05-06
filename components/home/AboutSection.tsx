@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { HeroGrid } from "./HeroGrid";
 
 // Stagger animation variants
 const containerVariants = {
@@ -50,6 +51,7 @@ export const AboutSection = () => {
       className="section-padding relative px-4 sm:px-6"
       id="about"
     >
+      <HeroGrid />
       <div className="container-main relative px-2 sm:px-0">
         <motion.div
           className="max-w-3xl mx-auto text-center"

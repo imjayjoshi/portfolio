@@ -17,12 +17,13 @@ import { ModernButton } from "@/components/ui/ModernButton";
 import { Magnetic } from "@/components/ui/Magnetic";
 
 const navLinks = [
-  { href: "/", label: "Home" },
+  // { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/experience", label: "Experience" },
   { href: "/projects", label: "Projects" },
   { href: "/skills", label: "Skills" },
   { href: "/certifications", label: "Certifications" },
+  { href: "/contact", label: "Let's Connect" },
 ];
 
 // Magnetic hover effect hook
