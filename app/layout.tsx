@@ -45,7 +45,7 @@ export default function RootLayout({
               sameAs: [
                 "https://github.com/imjayjoshi",
                 "https://linkedin.com/in/jay-joshi2708",
-                "https://twitter.com/jayjoshi278",
+                "https://twitter.com/fixwithjay",
               ],
               description:
                 "Full Stack Developer specializing in MERN stack and AI technologies.",

@@ -120,7 +120,7 @@ const defaultData: PortfolioData = {
   roles: ["Full Stack Developer", "MERN", "AI"],
   summary:
     "I’m a full stack developer focused on building scalable, user-centric web applications using the MERN stack and modern AI-driven tools.",
-  email: "jayjoshi2784@gmail.com",
+  email: "fixwithjay4@gmail.com",
   phone: "8238061585",
   location: "Ahmedabad, India",
   linkedin: "https://www.linkedin.com/in/jay-joshi2708/",
@@ -436,7 +436,7 @@ const defaultData: PortfolioData = {
   ],
   seo: {
     siteUrl: "https://jay-joshi.vercel.app",
-    twitterHandle: "@jayjoshi278",
+    twitterHandle: "@fixwithjay",
     defaultOgImage: "/og-image.png",
     pages: {
       home: {
