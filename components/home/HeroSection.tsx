@@ -102,14 +102,6 @@ export const HeroSection = () => {
           className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4 sm:mb-6 leading-[1.05] text-white"
         />
 
-        {/* <motion.h1
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 sm:mb-8 leading-[1.05] text-white"
-          style={{ fontFamily: "'Raleway', sans-serif" }}
-          variants={fadeUpVariant}
-        >
-          I Build Scalable <br className="hidden md:block" /> Digital Products
-        </motion.h1> */}
-
         <motion.p
           className="text-base sm:text-lg lg:text-xl text-white/50 max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12 leading-relaxed px-2 font-light"
           variants={subtextVariant}
