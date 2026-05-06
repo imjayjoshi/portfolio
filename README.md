@@ -116,8 +116,8 @@ _Full Stack Developer & AI Enthusiast_
 - 🌐 [Live Portfolio](https://jay-joshi.vercel.app)
 - 💼 [LinkedIn](https://linkedin.com/in/jay-joshi2708)
 - 🐙 [GitHub](https://github.com/imjayjoshi)
-- 🐦 [Twitter](https://twitter.com/jayjoshi278)
-- 📧 [Email](mailto:jayjoshi2784@gmail.com)
+- 🐦 [Twitter](https://twitter.com/fixwithjay)
+- 📧 [Email](mailto:fixwithjay4@gmail.com)
 
 ---
 

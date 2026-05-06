@@ -4,7 +4,7 @@ const defaultSeo = {
   name: "Jay Joshi",
   title: "Jay Joshi | Full Stack Web Developer (MERN & AI)",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://jay-joshi.vercel.app",
-  twitterHandle: "@jayjoshi278",
+  twitterHandle: "@fixwithjay",
   defaultOgImage: "/og-image.png",
   keywords: [
     "Jay Joshi",
