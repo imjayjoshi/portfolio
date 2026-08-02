@@ -65,6 +65,54 @@ export interface CoreCompetency {
   value: string;
 }
 
+export interface FreelanceService {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  deliverables: string[];
+}
+
+export interface WorkPackage {
+  id: string;
+  name: string;
+  price: string;
+  timeline: string;
+  description: string;
+  features: string[];
+  idealFor: string;
+  highlighted?: boolean;
+}
+
+export interface CaseStudy {
+  id: string;
+  projectId: string;
+  challenge: string;
+  solution: string;
+  results: string[];
+  role: string;
+  timeline: string;
+}
+
+export interface Testimonial {
+  id: string;
+  quote: string;
+  author: string;
+  role: string;
+}
+
+export interface ProcessStep {
+  step: number;
+  title: string;
+  description: string;
+}
+
+export interface FreelanceStat {
+  label: string;
+  value: number;
+  suffix?: string;
+}
+
 export interface SeoConfig {
   siteUrl: string;
   twitterHandle: string;
@@ -77,6 +125,9 @@ export interface SeoConfig {
     experience: { title: string; description: string };
     certifications: { title: string; description: string };
     contact: { title: string; description: string };
+    services: { title: string; description: string };
+    hire: { title: string; description: string };
+    work: { title: string; description: string };
   };
 }
 
@@ -100,16 +151,21 @@ export interface PortfolioData {
   skillCategories: SkillCategory[];
   aboutPage: AboutPageContent;
   coreCompetencies: CoreCompetency[];
+  freelanceServices: FreelanceService[];
+  workPackages: WorkPackage[];
+  caseStudies: CaseStudy[];
+  testimonials: Testimonial[];
+  processSteps: ProcessStep[];
+  freelanceStats: FreelanceStat[];
+  availability: string;
   seo: SeoConfig;
 }
 
 interface PortfolioState {
   data: PortfolioData;
   certificationBgEnabled: boolean;
-  backgroundVariant: "minimal" | "default" | "enhanced";
   setData: (data: Partial<PortfolioData>) => void;
   setCertificationBg: (enabled: boolean) => void;
-  setBackgroundVariant: (variant: "minimal" | "default" | "enhanced") => void;
   resetToDefault: () => void;
 } 
 
@@ -434,6 +490,202 @@ const defaultData: PortfolioData = {
     { label: "Database", value: "MongoDB, MySQL, PostgreSQL" },
     { label: "Tools", value: "Git, Docker, VS Code" },
   ],
+  availability: "Open for freelance projects & full-time roles — 2 slots this quarter",
+  freelanceStats: [
+    { label: "Projects delivered", value: 12, suffix: "+" },
+    { label: "Client satisfaction", value: 100, suffix: "%" },
+    { label: "Years building", value: 3, suffix: "+" },
+    { label: "Tech stack depth", value: 25, suffix: "+" },
+  ],
+  freelanceServices: [
+    {
+      id: "fullstack",
+      title: "Full-Stack Web Apps",
+      description:
+        "End-to-end MERN/Next.js products — from UI and APIs to deployment on Vercel, Railway, or Hostinger.",
+      icon: "Layers",
+      deliverables: [
+        "Responsive UI with React/Next.js",
+        "REST or real-time APIs",
+        "Database design & auth",
+        "Production deployment",
+      ],
+    },
+    {
+      id: "ai",
+      title: "AI Integration",
+      description:
+        "Add intelligent features: NLP, resume ranking, chat assistants, and Streamlit dashboards tied to your product.",
+      icon: "Sparkles",
+      deliverables: [
+        "Model integration & APIs",
+        "Streamlit or in-app AI UX",
+        "Data pipelines",
+        "Documentation & handoff",
+      ],
+    },
+    {
+      id: "mvp",
+      title: "MVP & Startup Builds",
+      description:
+        "Fast, focused MVPs for founders who need a credible product to validate with users or investors.",
+      icon: "Rocket",
+      deliverables: [
+        "Scope & roadmap",
+        "Core feature set",
+        "Analytics-ready setup",
+        "Iterative releases",
+      ],
+    },
+    {
+      id: "maintenance",
+      title: "Maintenance & Scale",
+      description:
+        "Improve performance, fix bugs, add features, and harden security on existing codebases.",
+      icon: "Wrench",
+      deliverables: [
+        "Code audit",
+        "Performance tuning",
+        "Test coverage",
+        "Ongoing support plans",
+      ],
+    },
+  ],
+  workPackages: [
+    {
+      id: "starter",
+      name: "Starter",
+      price: "From ₹25,000",
+      timeline: "2–3 weeks",
+      description: "Landing page or small feature slice for individuals and early-stage ideas.",
+      features: [
+        "Up to 3 pages or 1 core feature",
+        "Mobile-responsive design",
+        "Contact form integration",
+        "1 round of revisions",
+      ],
+      idealFor: "Personal brands, portfolios, simple MVPs",
+    },
+    {
+      id: "growth",
+      name: "Growth",
+      price: "From ₹75,000",
+      timeline: "4–8 weeks",
+      description: "Full product build with auth, dashboard, and deployment.",
+      features: [
+        "Full-stack application",
+        "Authentication & roles",
+        "Admin or user dashboard",
+        "Deployment & basic SEO",
+        "2 rounds of revisions",
+      ],
+      idealFor: "Startups, SMBs, client portals",
+      highlighted: true,
+    },
+    {
+      id: "enterprise",
+      name: "Custom",
+      price: "Custom quote",
+      timeline: "Flexible",
+      description: "Complex systems, AI features, integrations, and long-term partnership.",
+      features: [
+        "Custom architecture",
+        "AI / third-party integrations",
+        "Dedicated communication",
+        "SLA & maintenance options",
+      ],
+      idealFor: "Agencies, enterprises, long-term products",
+    },
+  ],
+  caseStudies: [
+    {
+      id: "cs-1",
+      projectId: "1",
+      challenge:
+        "Users needed real-time pronunciation feedback across languages with secure accounts and production-grade reliability.",
+      solution:
+        "Built a MERN + TypeScript platform with JWT auth, WebSocket-ready APIs, speech analysis flows, and 80% backend test coverage.",
+      results: [
+        "Live product on Vercel + Railway",
+        "Multi-language pronunciation scoring",
+        "Analytics dashboards for progress tracking",
+      ],
+      role: "Full-Stack Developer",
+      timeline: "8 weeks",
+    },
+    {
+      id: "cs-2",
+      projectId: "2",
+      challenge:
+        "Food community needed a social feed with media uploads and secure user sessions.",
+      solution:
+        "Delivered MERN app with JWT auth, ImageKit media pipeline, and Tailwind UI optimized for engagement.",
+      results: [
+        "Posts, likes, and comments flow",
+        "Image upload pipeline",
+        "Responsive feed experience",
+      ],
+      role: "Full-Stack Developer",
+      timeline: "5 weeks",
+    },
+    {
+      id: "cs-3",
+      projectId: "3",
+      challenge:
+        "Recruiters spent hours manually screening resumes against job descriptions.",
+      solution:
+        "AI ranking app using TF-IDF + cosine similarity with Streamlit UI for batch uploads.",
+      results: [
+        "Faster shortlisting",
+        "Interactive relevance scores",
+        "Deployed demo for stakeholders",
+      ],
+      role: "AI Developer",
+      timeline: "3 weeks",
+    },
+  ],
+  testimonials: [
+    {
+      id: "1",
+      quote:
+        "Jay delivered our MVP on time with clean code and clear communication throughout. Highly recommend for MERN projects.",
+      author: "Startup founder",
+      role: "Product client",
+    },
+    {
+      id: "2",
+      quote:
+        "Strong full-stack skills — from UI polish to API design. Easy to work with remotely.",
+      author: "Agency lead",
+      role: "Development partner",
+    },
+  ],
+  processSteps: [
+    {
+      step: 1,
+      title: "Discovery",
+      description:
+        "We align on goals, users, timeline, and success metrics in a short call or brief.",
+    },
+    {
+      step: 2,
+      title: "Proposal",
+      description:
+        "You receive a clear scope, milestones, and fixed or phased pricing — no surprises.",
+    },
+    {
+      step: 3,
+      title: "Build",
+      description:
+        "Iterative development with weekly updates, demos, and access to staging environments.",
+    },
+    {
+      step: 4,
+      title: "Launch",
+      description:
+        "Deployment, handoff docs, and optional maintenance so your product stays healthy.",
+    },
+  ],
   seo: {
     siteUrl: "https://jay-joshi.vercel.app",
     twitterHandle: "@fixwithjay",
@@ -474,6 +726,21 @@ const defaultData: PortfolioData = {
         description:
           "Get in touch with Jay Joshi for full-stack web development opportunities, collaborations, or project inquiries.",
       },
+      services: {
+        title: "Freelance Web Development Services | Jay Joshi",
+        description:
+          "Hire Jay Joshi for full-stack development, AI integration, MVPs, and maintenance. MERN, Next.js, and production deployments.",
+      },
+      hire: {
+        title: "Hire Jay Joshi | Freelancer & Full-Stack Developer",
+        description:
+          "Packages, availability, and process for clients and recruiters hiring Jay Joshi for web development work.",
+      },
+      work: {
+        title: "Case Studies & Portfolio Work | Jay Joshi",
+        description:
+          "Detailed case studies of MERN and AI projects — challenges, solutions, and measurable outcomes.",
+      },
     },
   },
 };
@@ -481,12 +748,10 @@ const defaultData: PortfolioData = {
 export const usePortfolioStore = create<PortfolioState>()((set) => ({
   data: defaultData,
   certificationBgEnabled: true,
-  backgroundVariant: "minimal",
   setData: (newData) =>
     set((state) => ({
       data: { ...state.data, ...newData },
     })),
   setCertificationBg: (enabled) => set({ certificationBgEnabled: enabled }),
-  setBackgroundVariant: (variant) => set({ backgroundVariant: variant }),
   resetToDefault: () => set({ data: defaultData }),
 }));

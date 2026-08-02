@@ -5,9 +5,6 @@ const nextConfig = {
     domains: [],
   },
   transpilePackages: [
-    "three",
-    "@react-three/fiber",
-    "gsap",
     "@studio-freight/lenis",
   ],
 };

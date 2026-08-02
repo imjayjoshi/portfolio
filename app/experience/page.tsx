@@ -1,43 +1,18 @@
 "use client";
 
-import { useRef, useEffect, useState, Suspense } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import dynamic from "next/dynamic";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { Briefcase, MapPin, Calendar } from "lucide-react";
 
-
-/*
-const ExperienceScene = dynamic(
-  () =>
-    import("@/components/three/ExperienceScene").then((mod) => ({
-      default: mod.ExperienceScene,
-    })),
-  { ssr: false, loading: () => null }
-);
-*/
-
-const DNAHelixExperienceScene = dynamic(
-  () =>
-    import("@/components/three/DNAHelixExperienceScene").then((m) => ({
-      default: m.DNAHelixExperienceScene,
-    })),
-  { ssr: false }
-);
 export default function ExperiencePage() {
-  const { data, setBackgroundVariant } = usePortfolioStore();
+  const { data } = usePortfolioStore();
   const headerRef = useRef(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
   const experienceRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    setIsMounted(true);
-    setBackgroundVariant("default");
-  }, [setBackgroundVariant]);
 
   // Scroll progress for the timeline
   const { scrollYProgress } = useScroll({
@@ -78,27 +53,10 @@ export default function ExperiencePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [data.experiences.length]);
 
-  if (!isMounted) return null;
-
   return (
-    <Layout showBackground={false}>
+    <Layout>
       <PageTransition>
         <div className="relative min-h-screen">
-          {/* Background Scene */}
-          <div className="fixed inset-0 z-0">
-            {/**
-             * Previous background scene kept for reference:
-             * <ExperienceScene />
-             */}
-            <Suspense fallback={null}>
-              <DNAHelixExperienceScene
-                activeIndex={activeIndex}
-                totalExperiences={data.experiences.length}
-                scrollProgress={scrollYProgress.get()}
-              />
-            </Suspense>
-          </div>
-
           <section className="section-padding relative z-10">
             <div className="container-main px-4 sm:px-6">
               {/* Header */}
@@ -116,7 +74,7 @@ export default function ExperiencePage() {
                   </h1>
                 </div>
                 <p className="text-muted-foreground mb-8 md:mb-16 max-w-2xl mx-auto text-base sm:text-lg px-4">
-                  My professional journey and the impact I've made along the
+                  My professional journey and the impact I&apos;ve made along the
                   way.
                 </p>
               </motion.div>
@@ -126,10 +84,10 @@ export default function ExperiencePage() {
                 {/* Timeline line - left on mobile, center on desktop */}
                 <div className="absolute left-4 sm:left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-border/30 md:-translate-x-1/2" />
 
-                {/* Animated progress line */}
                 <motion.div
-                  className="absolute left-4 sm:left-6 md:left-1/2 top-0 w-0.5 bg-accent md:-translate-x-1/2 origin-top"
+                  className="absolute left-4 sm:left-6 md:left-1/2 top-0 w-0.5 md:-translate-x-1/2 origin-top"
                   style={{
+                    background: "linear-gradient(to bottom, #7c3aed, #06b6d4)",
                     scaleY: smoothProgress,
                     height: "100%",
                   }}
@@ -151,8 +109,16 @@ export default function ExperiencePage() {
                       >
                         <div
                           className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-background shadow-md ${
-                            activeIndex >= index ? "bg-accent" : "bg-muted"
+                            activeIndex >= index ? "" : "bg-muted"
                           }`}
+                          style={
+                            activeIndex >= index
+                              ? {
+                                  background:
+                                    "linear-gradient(135deg, #7c3aed, #06b6d4)",
+                                }
+                              : undefined
+                          }
                         />
                       </div>
 
@@ -223,6 +189,9 @@ export default function ExperiencePage() {
                   );
                 })}
               </div>
+
+              {/* Section divider before Education */}
+              <div className="gradient-line" aria-hidden="true" />
 
               {/* Education Section */}
               <div className="mt-16 sm:mt-20 md:mt-24">

@@ -4,54 +4,23 @@ import { useState, useEffect, useRef } from "react";
 import {
   motion,
   AnimatePresence,
-  useMotionValue,
-  useSpring,
 } from "framer-motion";
 import { Menu, X, Github, Linkedin, Instagram } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import gsap from "gsap";
 import { usePageTransition } from "@/components/transitions";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { ModernButton } from "@/components/ui/ModernButton";
-import { Magnetic } from "@/components/ui/Magnetic";
 
 const navLinks = [
-  // { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/experience", label: "Experience" },
+  { href: "/services", label: "Services" },
+  { href: "/work", label: "Work" },
   { href: "/projects", label: "Projects" },
-  { href: "/skills", label: "Skills" },
-  { href: "/certifications", label: "Certifications" },
-  { href: "/contact", label: "Let's Connect" },
+  { href: "/experience", label: "Experience" },
+  { href: "/hire", label: "Hire" },
+  { href: "/contact", label: "Contact" },
 ];
-
-// Magnetic hover effect hook
-const useMagneticHover = () => {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 150, damping: 15 });
-  const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const distanceX = (e.clientX - centerX) * 0.3;
-    const distanceY = (e.clientY - centerY) * 0.3;
-    x.set(distanceX);
-    y.set(distanceY);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return { ref, springX, springY, handleMouseMove, handleMouseLeave };
-};
 
 const NavLink = ({
   href,
@@ -71,9 +40,7 @@ const NavLink = ({
     e.preventDefault();
     if (isTransitioning || href === pathname) return;
     onClick?.();
-    const transitionType =
-      href === "/" || pathname === "/" ? "particle" : "glass";
-    navigateWithTransition(href, transitionType);
+    navigateWithTransition(href);
   };
 
   return (
@@ -89,7 +56,7 @@ const NavLink = ({
       <span className="relative z-10 block overflow-hidden h-[24px]">
         <motion.span
           className={`inline-block text-base font-bold whitespace-nowrap ${
-            isActive ? "text-accent" : "text-muted-foreground group-hover:text-accent font-medium transition-colors duration-500"
+            isActive ? "gradient-text" : "text-muted-foreground group-hover:text-accent font-medium transition-colors duration-500"
           }`}
           animate={{
             y: isHovered ? -30 : 0,
@@ -140,7 +107,6 @@ export const Navbar = () => {
   const { data } = usePortfolioStore();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const logoRef = useRef<HTMLAnchorElement>(null);
   const pathname = usePathname();
   const { navigateWithTransition, isTransitioning } = usePageTransition();
 
@@ -165,31 +131,12 @@ export const Navbar = () => {
         .join("")
     : "JJ";
 
-  // Logo hover animation
-  const handleLogoHover = () => {
-    if (logoRef.current) {
-      gsap.to(logoRef.current, {
-        scale: 1.05,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  };
-
-  const handleLogoLeave = () => {
-    if (logoRef.current) {
-      gsap.to(logoRef.current, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  };
+  // Logo hover animation handled via CSS transition on the element
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (isTransitioning || pathname === "/") return;
-    navigateWithTransition("/", "particle");
+    navigateWithTransition("/");
   };
 
   return (
@@ -209,7 +156,7 @@ export const Navbar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-[-1] glass-navbar shadow-[0_8px_32px_rgba(0,0,0,0.4)] border-b border-white/10 [backdrop-filter:blur(24px)_saturate(200%)_brightness(1.1)]"
+              className="absolute inset-0 z-[-1] glass-navbar shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
             />
           )}
         </AnimatePresence>
@@ -218,13 +165,10 @@ export const Navbar = () => {
           {/* Left: Logo */}
           <div className="flex-1 flex justify-start">
             <Link
-              ref={logoRef}
               href="/"
               onClick={handleLogoClick}
-              className="font-display font-bold text-3xl tracking-tight relative z-10"
+              className="font-display font-bold text-3xl tracking-tight relative z-10 transition-transform duration-300 hover:scale-105"
               aria-label={`${data.name} logo`}
-              onMouseEnter={handleLogoHover}
-              onMouseLeave={handleLogoLeave}
             >
               <motion.span
                 className="relative inline-block"
@@ -264,7 +208,8 @@ export const Navbar = () => {
               className="hidden md:block"
             >
               <ModernButton
-                onClick={() => navigateWithTransition("/contact", "glass")}
+                onClick={() => navigateWithTransition("/contact")}
+                variant="gradient"
                 className="px-5 py-2"
                 bold
               >
@@ -315,7 +260,8 @@ export const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden fixed inset-0 z-[9999] bg-background flex flex-col pt-32 px-10"
+            className="md:hidden fixed inset-0 z-[9999] flex flex-col pt-32 px-10"
+            style={{ background: "#0d1117" }}
             initial={{ clipPath: "circle(0% at top right)" }}
             animate={{ clipPath: "circle(150% at top right)" }}
             exit={{ clipPath: "circle(0% at top right)" }}
@@ -340,7 +286,7 @@ export const Navbar = () => {
               <span className="text-xs uppercase tracking-[0.4em] font-medium text-muted-foreground group-hover:text-accent transition-colors">
                 Close
               </span>
-              <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-accent group-active:scale-95 transition-all">
+              <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-[#7c3aed50] group-active:scale-95 transition-all">
                 <X size={20} className="group-hover:text-white" />
               </div>
             </motion.button>

@@ -15,8 +15,8 @@ interface SpotlightCardProps {
 export const SpotlightCard = ({
   children,
   className = "",
-  glowColor = "hsl(var(--accent) / 0.15)",
-  borderGlowColor = "hsl(var(--accent) / 0.45)",
+  glowColor = "rgba(124, 58, 237, 0.12)",
+  borderGlowColor = "rgba(124, 58, 237, 0.45)",
   intensity = 400,
   showBorder = true,
 }: SpotlightCardProps) => {
@@ -44,7 +44,8 @@ export const SpotlightCard = ({
   // Background and border style transitions
   const background = useTransform(
     [springX, springY],
-    ([x, y]) => `radial-gradient(${intensity}px circle at ${x}px ${y}px, ${glowColor}, transparent 80%)`
+    ([x, y]) =>
+      `radial-gradient(${intensity}px circle at ${x}px ${y}px, rgba(124,58,237,0.10), rgba(6,182,212,0.05) 50%, transparent 80%)`,
   );
 
   const borderBackground = useTransform(

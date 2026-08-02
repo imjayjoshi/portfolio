@@ -17,8 +17,11 @@ const defaultSeo = {
     "Jay Joshi Vercel Portfolio",
     "React Developer",
     "Next.js Developer",
-    "MERN Stack Developer",
+    "TypeScript Developer",
+    "MongoDB Developer",
+    "Node.js Developer",
     "AI Engineer",
+    "Portfolio 2025",
     "Software Portfolio",
     "Jay Joshi GitHub",
   ].join(", "),
@@ -31,7 +34,10 @@ type PageKey =
   | "skills"
   | "experience"
   | "certifications"
-  | "contact";
+  | "contact"
+  | "services"
+  | "hire"
+  | "work";
 
 interface PageSeo {
   title: string;
@@ -66,6 +72,18 @@ const pageSeo: Record<PageKey, PageSeo> = {
   contact: {
     title: `Hire Full Stack Developer India | ${defaultSeo.name}`,
     description: `Get in touch with Jay Joshi for full-stack web development opportunities, collaborations, or project inquiries.`,
+  },
+  services: {
+    title: `Freelance Web Development Services | ${defaultSeo.name}`,
+    description: `Hire Jay Joshi for full-stack development, AI integration, MVPs, and maintenance. MERN, Next.js, and production deployments.`,
+  },
+  hire: {
+    title: `Hire Jay Joshi | Freelancer & Full-Stack Developer`,
+    description: `Packages, availability, and process for clients and recruiters hiring Jay Joshi for web development work.`,
+  },
+  work: {
+    title: `Case Studies & Portfolio Work | ${defaultSeo.name}`,
+    description: `Detailed case studies of MERN and AI projects — challenges, solutions, and measurable outcomes.`,
   },
 };
 

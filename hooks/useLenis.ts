@@ -2,11 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "@studio-freight/lenis";
+import { registerGsapPlugins, ScrollTrigger } from "@/lib/gsap";
 
 export const useLenis = () => {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    registerGsapPlugins();
+
     const lenis = new Lenis({
       duration: 1.5,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -19,6 +22,8 @@ export const useLenis = () => {
     });
 
     lenisRef.current = lenis;
+
+    lenis.on("scroll", ScrollTrigger.update);
 
     function raf(time: number) {
       lenis.raf(time);

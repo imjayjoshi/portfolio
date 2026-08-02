@@ -42,8 +42,7 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
-          glow: "hsl(var(--accent-glow))",
-          soft: "hsl(var(--accent-soft))",
+          secondary: "hsl(var(--accent-secondary))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -59,9 +58,11 @@ export default {
         display: ["Bricolage Grotesque", "system-ui", "sans-serif"],
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xs: "4px",
+        sm: "8px",
+        md: "12px",
+        lg: "20px",
+        full: "9999px",
         xl: "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
         "3xl": "calc(var(--radius) + 16px)",

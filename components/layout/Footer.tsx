@@ -27,7 +27,7 @@ export const Footer = () => {
         {/* Left: Credits */}
         <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-medium">
           <span className="opacity-80">© {new Date().getFullYear()}</span>
-          <span className="text-foreground font-bold hover:text-blue-500 transition-colors cursor-default">
+          <span className="text-foreground font-bold hover:text-[#a78bfa] transition-colors cursor-default">
             {data.name}.
           </span>
           <span className="opacity-80">All Rights Reserved.</span>
@@ -41,7 +41,7 @@ export const Footer = () => {
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs sm:text-sm text-muted-foreground hover:text-blue-500 font-medium transition-all duration-300"
+              className="text-xs sm:text-sm text-muted-foreground hover:text-[#a78bfa] font-medium transition-all duration-300"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
             >

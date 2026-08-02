@@ -6,101 +6,66 @@ import {
   useState,
   useCallback,
   useEffect,
-  useRef,
   ReactNode,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
+import { motion, AnimatePresence } from "framer-motion";
 
-const FluidMembraneTransition = dynamic(
-  () => import("./FluidMembraneTransition").then((m) => ({ default: m.FluidMembraneTransition })),
-  { ssr: false }
-);
-
-const ParticleDisintegration = dynamic(
-  () => import("./ParticleDisintegration").then((m) => ({ default: m.ParticleDisintegration })),
-  { ssr: false }
-);
-
-type TransitionType = "fluid" | "particle" | "glass" | "none";
-
-interface TransitionContextType {
-  navigateWithTransition: (href: string, type?: TransitionType) => void;
+type TransitionContextType = {
+  navigateWithTransition: (href: string) => void;
   isTransitioning: boolean;
-  transitionType: TransitionType;
-}
+};
 
 const TransitionContext = createContext<TransitionContextType>({
   navigateWithTransition: () => {},
   isTransitioning: false,
-  transitionType: "none",
 });
 
 export const usePageTransition = () => useContext(TransitionContext);
 
 export const TransitionProvider = ({ children }: { children: ReactNode }) => {
-  const router   = useRouter();
+  const router = useRouter();
   const pathname = usePathname();
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [transitionType,  setTransitionType]  = useState<TransitionType>("none");
-  const [showFluid,       setShowFluid]       = useState(false);
-  const [showParticle,    setShowParticle]    = useState(false);
-  const [clickOrigin,     setClickOrigin]     = useState({ x: 0.5, y: 0.5 });
-  const lastClick = useRef({ x: 0.5, y: 0.5 });
-
-  useEffect(() => {
-    const onDown = (e: MouseEvent) => {
-      lastClick.current = { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight };
-    };
-    window.addEventListener("mousedown", onDown);
-    return () => window.removeEventListener("mousedown", onDown);
-  }, []);
+  const [show, setShow] = useState(false);
 
   const navigateWithTransition = useCallback(
-    (href: string, type?: TransitionType) => {
+    (href: string) => {
       if (isTransitioning || href === pathname) return;
-      const selectedType = type ?? "fluid";
-      setTransitionType(selectedType);
       setIsTransitioning(true);
-      setClickOrigin({ ...lastClick.current });
-
-      if (selectedType === "particle") {
-        setShowParticle(true);
-        setTimeout(() => router.push(href), 550);
-        setTimeout(() => { setShowParticle(false); setIsTransitioning(false); setTransitionType("none"); }, 1500);
-      } else if (selectedType === "fluid") {
-        setShowFluid(true);
-        setTimeout(() => router.push(href), 380);
-        setTimeout(() => { setShowFluid(false); setIsTransitioning(false); setTransitionType("none"); }, 950);
-      } else {
+      setShow(true);
+      setTimeout(() => {
         router.push(href);
-        setTimeout(() => { setIsTransitioning(false); setTransitionType("none"); }, 300);
-      }
+        setTimeout(() => {
+          setShow(false);
+          setIsTransitioning(false);
+        }, 300);
+      }, 200);
     },
-    [isTransitioning, pathname, router]
+    [isTransitioning, pathname, router],
   );
 
   useEffect(() => {
-    return () => {
-      setIsTransitioning(false); setTransitionType("none");
-      setShowFluid(false); setShowParticle(false);
-    };
+    setShow(false);
+    setIsTransitioning(false);
   }, [pathname]);
 
   return (
-    <TransitionContext.Provider value={{ navigateWithTransition, isTransitioning, transitionType }}>
+    <TransitionContext.Provider value={{ navigateWithTransition, isTransitioning }}>
       {children}
-      {showFluid && (
-        <FluidMembraneTransition active={showFluid} originX={clickOrigin.x} originY={clickOrigin.y} color="#0b0d10" />
-      )}
-      {showParticle && (
-        <ParticleDisintegration
-          active={showParticle}
-          originX={clickOrigin.x}
-          originY={clickOrigin.y}
-          onComplete={() => { setShowParticle(false); setIsTransitioning(false); setTransitionType("none"); }}
-        />
-      )}
+      <AnimatePresence>
+        {show && (
+          <motion.div
+            key="transition"
+            className="fixed inset-0 z-[9999] pointer-events-none"
+            style={{ background: "#0d1117" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          />
+        )}
+      </AnimatePresence>
     </TransitionContext.Provider>
   );
 };

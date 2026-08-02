@@ -13,12 +13,10 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
-import { ScrollBackground } from "@/components/transitions/ScrollBackground";
 import { usePortfolioStore } from "@/store/portfolioStore";
 import { useToast } from "@/hooks/use-toast";
 import { useReveal } from "@/hooks/useReveal";
 import { z } from "zod";
-import gsap from "gsap";
 
 const contactSchema = z.object({
   name: z
@@ -130,13 +128,9 @@ export default function ContactPage() {
   const titleWords = "Let's Connect".split(" ");
 
   return (
-    <Layout showBackground={false}>
+    <Layout>
       <PageTransition>
-        <section className="section-padding min-h-screen relative overflow-hidden bg-[#050505]">
-          {/* Subtle Ambient Glows */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
-
+        <section className="section-padding min-h-screen relative overflow-hidden">
           <div className="container-main relative z-10 px-4 sm:px-6">
             <div className="max-w-5xl mx-auto">
               {/* Header with staggered letters */}

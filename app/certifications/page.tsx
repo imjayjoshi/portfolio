@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import {
   ExternalLink,
   BadgeCheck,
@@ -12,20 +11,11 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { PageTransition } from "@/components/layout/PageTransition";
-import { ScrollBackground } from "@/components/transitions/ScrollBackground";
 import { usePortfolioStore } from "@/store/portfolioStore";
 
 export default function CertificationsPage() {
-  const { data, setBackgroundVariant } = usePortfolioStore();
+  const { data } = usePortfolioStore();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    setBackgroundVariant("minimal");
-  }, [setBackgroundVariant]);
-
-  if (!isMounted) return null;
 
   const nextCard = () => {
     setSelectedIndex((prev) => (prev + 1) % data.certifications.length);
@@ -39,11 +29,9 @@ export default function CertificationsPage() {
   };
 
   return (
-    <Layout showBackground={false}>
+    <Layout>
       <PageTransition>
         <div className="relative">
-          <ScrollBackground />
-
           <section className="section-padding relative z-10">
             <div className="container-main w-full">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -99,7 +87,7 @@ export default function CertificationsPage() {
                       transition={{ duration: 0.3 }}
                       className="glass-card rounded-3xl p-6 mb-6"
                     >
-                      <h3 className="text-xl font-bold mb-2">
+                      <h3 className="text-xl font-bold mb-2 gradient-text">
                         {data.certifications[selectedIndex]?.title}
                       </h3>
                       <p className="text-muted-foreground mb-1">
@@ -191,16 +179,17 @@ export default function CertificationsPage() {
                           transformStyle: "preserve-3d",
                         }}
                       >
-                        {/* Glassmorphism card */}
+                        {/* Glass card */}
                         <div
-                          className={`w-full h-full rounded-[2rem] overflow-hidden ${
-                            isSelected ? "shadow-2xl shadow-accent/20" : ""
-                          }`}
+                          className="glass-card w-full h-full rounded-[2rem] overflow-hidden"
                           style={{
-                            background:
-                              "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
-                            backdropFilter: "blur(20px)",
-                            border: "1px solid rgba(255,255,255,0.15)",
+                            background: "rgba(124,58,237,0.06)",
+                            border: isSelected
+                              ? "1px solid #7c3aed50"
+                              : "1px solid #7c3aed20",
+                            boxShadow: isSelected
+                              ? "0 20px 60px #7c3aed25"
+                              : undefined,
                           }}
                         >
                           {/* Certificate Image at the top */}
@@ -227,7 +216,7 @@ export default function CertificationsPage() {
                                 <span className="text-xs text-white/50 uppercase tracking-wider">
                                   Certificate
                                 </span>
-                                <h4 className="text-lg font-semibold mt-1 line-clamp-2">
+                                <h4 className="text-lg font-semibold mt-1 line-clamp-2 gradient-text">
                                   {cert.title}
                                 </h4>
                               </div>

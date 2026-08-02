@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { usePageTransition } from "@/components/transitions";
 import { ModernButton } from "@/components/ui/ModernButton";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 // import { ScrollVelocityWrapper } from "@/hooks/useScrollVelocitySkew";
 
 const containerVariants = {
@@ -60,33 +61,15 @@ export const ProjectsSection = () => {
   return (
       // <ScrollVelocityWrapper intensity={0.3} maxSkew={5}>
     <section ref={ref} className="section-padding px-4 sm:px-6" id="projects">
-      <div className="container-main">
-        {/* Section header with animations */}
+      <SectionDivider label="Projects" />
+      <div className="container-main -mt-2 md:-mt-4">
         <motion.div
-          className="text-center mb-8 sm:mb-10 md:mb-12"
+          className="text-center mb-10 sm:mb-12 md:mb-14"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+          data-gsap-reveal
         >
-          {/* Label with lines */}
-          <motion.div className="flex items-center justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
-            <motion.span
-              className="h-[1px] bg-gradient-to-r from-transparent to-accent"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: 60 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-            <span className="text-sm font-medium text-accent uppercase tracking-[0.3em]">
-              Projects
-            </span>
-            <motion.span
-              className="h-[1px] bg-gradient-to-l from-transparent to-accent"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: 60 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-          </motion.div>
-
           <motion.h2
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight py-2"
             initial={{ opacity: 0, y: 30 }}
@@ -136,7 +119,7 @@ export const ProjectsSection = () => {
                   y: -10,
                   transition: { duration: 0.3 },
                 }}
-                className="project-card p-6 sm:p-8 group relative overflow-hidden rounded-2xl flex flex-col h-full"
+                className="project-card gradient-border p-6 sm:p-8 group relative overflow-hidden rounded-2xl flex flex-col h-full"
               >
                 {/* Animated border gradient */}
                 <motion.div
@@ -180,7 +163,8 @@ export const ProjectsSection = () => {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent hover:bg-accent hover:text-white transition-all shadow-lg shadow-accent/20"
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-all"
+                          style={{ background: "linear-gradient(135deg, #7c3aed, #06b6d4)" }}
                         >
                           <ExternalLink className="w-5 h-5" />
                         </a>
@@ -203,7 +187,7 @@ export const ProjectsSection = () => {
                     {project.technologies.slice(0, 4).map((tech: string) => (
                       <span
                         key={tech}
-                        className="text-[10px] sm:text-xs px-2.5 py-1 rounded-lg bg-white/5 text-muted-foreground border border-white/5 hover:border-accent/30 hover:text-accent transition-all cursor-default"
+                        className="text-[10px] sm:text-xs px-2.5 py-1 rounded-lg bg-[#7c3aed08] text-muted-foreground border border-[#7c3aed20] hover:border-[#7c3aed50] hover:text-[#a78bfa] transition-all cursor-default"
                       >
                         {tech}
                       </span>
@@ -228,13 +212,14 @@ export const ProjectsSection = () => {
           transition={{ duration: 0.6, delay: 1 }}
         >
           <ModernButton
-            onClick={() => navigateWithTransition("/projects", "glass")}
+            onClick={() => navigateWithTransition("/projects")}
             showArrow
           >
             View All Projects
           </ModernButton>
         </motion.div>
       </div>
+
     </section>
     // </ScrollVelocityWrapper>
   );

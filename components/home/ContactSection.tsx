@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ModernButton } from "@/components/ui/ModernButton";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -49,42 +50,17 @@ export const ContactSection = () => {
   ];
 
   return (
-    <section ref={ref} className="pt-8 md:pt-10 lg:pt-12 pb-12 md:pb-16 lg:pb-20 px-6 relative" id="contact">
-      {/* Background glow */}
-      <motion.div
-        className=""
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 1.5 }}
-      />
+    <section ref={ref} className="section-padding px-6 relative" id="contact">
+      <SectionDivider label="Contact" />
 
-      <div className="container-main relative">
-        {/* Header */}
+      <div className="container-main relative -mt-2 md:-mt-4">
         <motion.div
-          className="text-center mb-8 sm:mb-10 md:mb-12"
+          className="text-center mb-10 sm:mb-12"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+          data-gsap-reveal
         >
-          {/* Label with lines */}
-          <motion.div className="flex items-center justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
-            <motion.span
-              className="h-[1px] bg-gradient-to-r from-transparent to-accent"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: 40 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-            <span className="text-xs sm:text-sm font-medium text-accent uppercase tracking-[0.3em]">
-              Contact
-            </span>
-            <motion.span
-              className="h-[1px] bg-gradient-to-l from-transparent to-accent"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: 40 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-          </motion.div>
-
           <motion.h2
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2"
             initial={{ opacity: 0, y: 30 }}

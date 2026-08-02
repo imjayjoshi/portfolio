@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { Layout, Server, Database, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ModernButton } from "@/components/ui/ModernButton";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 import { usePageTransition } from "@/components/transitions";
 // import { ScrollVelocityWrapper } from "@/hooks/useScrollVelocitySkew";
 
@@ -13,25 +14,25 @@ const skillGroups = [
     name: "Frontend",
     icon: Layout,
     highlight: "React, Next.js, TypeScript",
-    color: "from-blue-500 to-cyan-500",
+    color: "from-[#7c3aed] to-[#06b6d4]",
   },
   {
     name: "Backend",
     icon: Server,
     highlight: "Node.js, Express, Python",
-    color: "from-purple-500 to-pink-500",
+    color: "from-[#7c3aed] to-[#06b6d4]",
   },
   {
     name: "Database",
     icon: Database,
     highlight: "MongoDB, PostgreSQL, MySQL",
-    color: "from-green-500 to-emerald-500",
+    color: "from-[#06b6d4] to-[#7c3aed]",
   },
   {
     name: "AI / Tools",
     icon: Sparkles,
     highlight: "OpenAI, Streamlit, Git",
-    color: "from-orange-500 to-yellow-500",
+    color: "from-[#7c3aed]/80 to-[#06b6d4]",
   },
 ];
 
@@ -75,41 +76,22 @@ export const SkillsSection = () => {
       className="section-padding relative px-4 sm:px-6"
       id="skills"
     >
-      {/* Animated background gradient */}
+      <SectionDivider label="Skills" />
       <motion.div
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/3 to-transparent pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7c3aed]/5 to-transparent pointer-events-none"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 1 }}
       />
 
-      <div className="container-main relative">
-        {/* Header with reveal animation */}
+      <div className="container-main relative -mt-2 md:-mt-4">
         <motion.div
-          className="text-center mb-8 sm:mb-10 md:mb-12"
+          className="text-center mb-10 sm:mb-12 md:mb-14"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+          data-gsap-reveal
         >
-          {/* Label with lines */}
-          <motion.div className="flex items-center justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
-            <motion.span
-              className="h-[1px] bg-gradient-to-r from-transparent to-accent"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: 60 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-            <span className="text-sm font-medium text-accent uppercase tracking-[0.3em]">
-              Skills
-            </span>
-            <motion.span
-              className="h-[1px] bg-gradient-to-l from-transparent to-accent"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: 60 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-          </motion.div>
-
           <motion.h2
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold"
             initial={{ opacity: 0, y: 30 }}
@@ -144,7 +126,7 @@ export const SkillsSection = () => {
                 scale: 1.02,
                 transition: { duration: 0.3 },
               }}
-              className="glass-card p-5 sm:p-6 md:p-8 group cursor-pointer relative overflow-hidden"
+              className="glass-card gradient-border p-5 sm:p-6 md:p-8 group cursor-pointer relative overflow-hidden"
             >
               {/* Hover gradient overlay */}
               <motion.div
@@ -188,7 +170,7 @@ export const SkillsSection = () => {
           transition={{ delay: 0.8, duration: 0.6 }}
         >
           <ModernButton
-            onClick={() => navigateWithTransition("/skills", "glass")}
+            onClick={() => navigateWithTransition("/skills")}
             showArrow
           >
             View all skills
